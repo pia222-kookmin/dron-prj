@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 10, 10, 10;
+    --background-end-rgb: 5, 5, 5;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-dark-900 text-white antialiased;
+    background: linear-gradient(
+      180deg,
+      rgb(var(--background-start-rgb)) 0%,
+      rgb(var(--background-end-rgb)) 100%
+    );
+    min-height: 100vh;
+  }
+
+  /* 스크롤바 커스터마이징 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-cyber-600 rounded-tech;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-cyber-500;
+  }
+
+  /* 선택 영역 스타일 */
+  ::selection {
+    @apply bg-cyber-500/30 text-white;
+  }
+}
+
+@layer components {
+  /* 네온 글로우 버튼 */
+  .btn-cyber {
+    @apply relative px-6 py-3 font-mono text-sm uppercase tracking-wider;
+    @apply bg-transparent border border-cyber-500 text-cyber-400;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-cyber-500/10 hover:shadow-neon-blue hover:text-white;
+    @apply active:scale-95;
+  }
+
+  .btn-cyber-filled {
+    @apply btn-cyber bg-cyber-600 text-white border-transparent;
+    @apply hover:bg-cyber-500;
+  }
+
+  /* 테크니컬 카드 */
+  .card-tech {
+    @apply relative bg-dark-800/50 border border-dark-600/50;
+    @apply backdrop-blur-sm rounded-tech overflow-hidden;
+    @apply transition-all duration-300;
+    @apply hover:border-cyber-500/30 hover:shadow-inner-glow;
+  }
+
+  /* 글로우 텍스트 */
+  .text-glow {
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5),
+                 0 0 40px rgba(0, 212, 255, 0.3);
+  }
+
+  /* 스캔라인 오버레이 */
+  .scanline-overlay {
+    @apply pointer-events-none fixed inset-0 z-50;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+  }
+
+  /* 그리드 배경 */
+  .bg-tech-grid {
+    background-image: 
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* 섹션 컨테이너 */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* 헤딩 스타일 */
+  .heading-tech {
+    @apply font-display font-bold uppercase tracking-wider;
+    @apply bg-gradient-to-r from-white via-cyber-300 to-cyber-500;
+    @apply bg-clip-text text-transparent;
+  }
+
+  /* 코너 데코레이션 */
+  .corner-decoration {
+    @apply absolute w-4 h-4 border-cyber-500;
+  }
+
+  .corner-decoration--tl {
+    @apply top-0 left-0 border-t-2 border-l-2;
+  }
+
+  .corner-decoration--tr {
+    @apply top-0 right-0 border-t-2 border-r-2;
+  }
+
+  .corner-decoration--bl {
+    @apply bottom-0 left-0 border-b-2 border-l-2;
+  }
+
+  .corner-decoration--br {
+    @apply bottom-0 right-0 border-b-2 border-r-2;
+  }
+}
+
+@layer utilities {
+  /* 그라디언트 보더 */
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(135deg, #00d4ff, transparent, #a855f7);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
