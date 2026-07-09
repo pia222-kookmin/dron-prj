@@ -3,7 +3,13 @@
 import { motion } from "framer-motion";
 import { HERO_CONTENT } from "@/constants";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  lang?: "ko" | "en";
+}
+
+export default function HeroSection({ lang = "ko" }: HeroSectionProps) {
+  const content = HERO_CONTENT[lang] || HERO_CONTENT.ko;
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 배경 그라디언트 */}
@@ -46,8 +52,8 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-7xl md:text-9xl font-display font-bold mb-6 text-glow leading-none">
-            {HERO_CONTENT.title}
+          <h1 className="text-8xl md:text-[10rem] font-display font-bold mb-6 text-glow leading-none">
+            {content.title}
           </h1>
         </motion.div>
 
@@ -58,8 +64,8 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-8"
         >
-          <p className="text-xl md:text-3xl text-cyber-300 font-mono uppercase tracking-[0.3em] mb-2">
-            {HERO_CONTENT.subtitle}
+          <p className="text-2xl md:text-4xl text-cyber-300 font-mono uppercase tracking-[0.3em] mb-2">
+            {content.subtitle}
           </p>
           <div className="flex items-center justify-center gap-2">
             <div className="h-px w-12 bg-gradient-to-r from-transparent to-cyber-500" />
@@ -73,9 +79,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-gray-400 text-lg max-w-6xl mx-auto mb-12 leading-relaxed px-4"
+          className="text-gray-400 text-xl md:text-2xl max-w-6xl mx-auto mb-12 leading-relaxed px-4"
         >
-          {HERO_CONTENT.description}
+          {content.description}
         </motion.p>
 
         {/* CTA 버튼 */}
@@ -85,46 +91,13 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <a href="#products" className="btn-cyber-filled">
-            {HERO_CONTENT.cta.primary}
+          <a href="#products" className="btn-cyber-filled text-lg px-8 py-3">
+            {content.cta.primary}
           </a>
-          <a href="#contact" className="btn-cyber">
-            {HERO_CONTENT.cta.secondary}
+          <a href="#contact" className="btn-cyber text-lg px-8 py-3">
+            {content.cta.secondary}
           </a>
         </motion.div>
-
-        {/* 스크롤 인디케이터 - 숨김 */}
-        {/* <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="flex flex-col items-center gap-2 text-cyber-400"
-          >
-            <span className="text-xs uppercase tracking-wider font-mono">Scroll</span>
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
-          </motion.div>
-        </motion.div> */}
       </div>
 
       {/* 코너 데코레이션 */}

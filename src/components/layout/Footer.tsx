@@ -2,18 +2,26 @@
 
 import { FOOTER_CONTENT, SITE_CONFIG } from "@/constants";
 
-export default function Footer() {
+interface FooterProps {
+  lang?: "ko" | "en";
+}
+
+export default function Footer({ lang = "ko" }: FooterProps) {
+  const t = FOOTER_CONTENT[lang] || FOOTER_CONTENT.ko;
+  const description = lang === "ko" ? "고성능 드론 엔진 개발 및 대여 서비스" : "High-performance drone engine development and rental services.";
+  const address = SITE_CONFIG.contact.address[lang] || SITE_CONFIG.contact.address.ko;
+
   return (
     <footer className="relative bg-dark-950 border-t border-dark-800">
       <div className="section-container py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* 회사 정보 */}
           <div>
-            <h3 className="font-display font-bold text-xl text-white mb-4">
+            <h3 className="font-display font-bold text-2xl text-white mb-4">
               {SITE_CONFIG.name}
             </h3>
-            <p className="text-gray-500 text-sm mb-4">
-              {SITE_CONFIG.description}
+            <p className="text-gray-500 text-sm mb-4 leading-relaxed">
+              {description}
             </p>
             <div className="flex gap-4">
               {FOOTER_CONTENT.social.map((social) => (
@@ -37,7 +45,7 @@ export default function Footer() {
             <div className="space-y-2 text-sm text-gray-500">
               <p>{SITE_CONFIG.contact.email}</p>
               <p>{SITE_CONFIG.contact.phone}</p>
-              <p className="text-xs">{SITE_CONFIG.contact.address}</p>
+              <p className="text-xs">{address}</p>
             </div>
           </div>
 
@@ -47,7 +55,7 @@ export default function Footer() {
               Legal
             </h4>
             <div className="space-y-2">
-              {FOOTER_CONTENT.links.map((link) => (
+              {t.links.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
@@ -63,7 +71,7 @@ export default function Footer() {
         {/* 저작권 */}
         <div className="pt-8 border-t border-dark-800 text-center">
           <p className="text-sm text-gray-600 font-mono">
-            {FOOTER_CONTENT.copyright}
+            {t.copyright}
           </p>
         </div>
       </div>

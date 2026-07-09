@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { CONTACT_CONTENT } from "@/constants";
-import { isInquiryEmailEnabled, sendEmail } from "@/lib/emailjs";
+import { isInquiryEmailEnabled, sendEmail } from "@/lib/email";
 
 interface FormData {
   name: string;
@@ -17,7 +17,11 @@ interface FormStatus {
   message: string;
 }
 
-export default function InquiryForm() {
+interface InquiryFormProps {
+  lang?: "ko" | "en";
+}
+
+export default function InquiryForm({ lang = "ko" }: InquiryFormProps) {
   const inquiryEnabled = isInquiryEmailEnabled();
 
   const [formData, setFormData] = useState<FormData>({
@@ -32,24 +36,26 @@ export default function InquiryForm() {
     message: "",
   });
 
+  const t = CONTACT_CONTENT[lang] || CONTACT_CONTENT.ko;
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!inquiryEnabled) {
       setStatus({
         type: "error",
-        message: "현재 문의 기능이 비활성화되어 있습니다.",
+        message: lang === "ko" ? "현재 문의 기능이 비활성화되어 있습니다." : "The inquiry feature is currently disabled.",
       });
       return;
     }
 
-    setStatus({ type: "loading", message: "전송 중..." });
+    setStatus({ type: "loading", message: lang === "ko" ? "전송 중..." : "Sending..." });
 
     try {
       await sendEmail(formData);
       setStatus({
         type: "success",
-        message: "문의가 성공적으로 전송되었습니다!",
+        message: lang === "ko" ? "문의가 성공적으로 전송되었습니다!" : "Inquiry has been sent successfully!",
       });
       setFormData({ name: "", email: "", company: "", message: "" });
       
@@ -60,7 +66,7 @@ export default function InquiryForm() {
     } catch (error) {
       setStatus({
         type: "error",
-        message: "전송 실패. 다시 시도해주세요.",
+        message: lang === "ko" ? "전송 실패. 다시 시도해주세요." : "Sending failed. Please try again.",
       });
     }
   };
@@ -93,13 +99,13 @@ export default function InquiryForm() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="heading-tech text-5xl md:text-6xl mb-4">
+            <h2 className="heading-tech text-6xl md:text-7xl mb-6">
               {CONTACT_CONTENT.title}
             </h2>
-            <p className="text-cyber-400 text-lg font-mono uppercase tracking-wider mb-2">
-              {CONTACT_CONTENT.subtitle}
+            <p className="text-cyber-400 text-2xl font-mono uppercase tracking-wider mb-4">
+              {t.subtitle}
             </p>
-            <p className="text-gray-400">{CONTACT_CONTENT.description}</p>
+            <p className="text-gray-400 text-lg md:text-xl leading-relaxed">{t.description}</p>
           </motion.div>
 
           {/* 폼 */}
@@ -110,14 +116,14 @@ export default function InquiryForm() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="card-tech p-8 md:p-12"
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-8">
               {/* 이름 */}
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-mono uppercase tracking-wider text-cyber-400 mb-2"
+                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
                 >
-                  {CONTACT_CONTENT.form.name} *
+                  {t.form.name} *
                 </label>
                 <input
                   type="text"
@@ -126,8 +132,8 @@ export default function InquiryForm() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-dark-900/50 border border-dark-600 rounded-tech text-white placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
-                  placeholder="홍길동"
+                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
+                  placeholder={lang === "ko" ? "홍길동" : "John Doe"}
                 />
               </div>
 
@@ -135,9 +141,9 @@ export default function InquiryForm() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-mono uppercase tracking-wider text-cyber-400 mb-2"
+                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
                 >
-                  {CONTACT_CONTENT.form.email} *
+                  {t.form.email} *
                 </label>
                 <input
                   type="email"
@@ -146,7 +152,7 @@ export default function InquiryForm() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-dark-900/50 border border-dark-600 rounded-tech text-white placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
+                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
                   placeholder="email@example.com"
                 />
               </div>
@@ -155,9 +161,9 @@ export default function InquiryForm() {
               <div>
                 <label
                   htmlFor="company"
-                  className="block text-sm font-mono uppercase tracking-wider text-cyber-400 mb-2"
+                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
                 >
-                  {CONTACT_CONTENT.form.company}
+                  {t.form.company}
                 </label>
                 <input
                   type="text"
@@ -165,8 +171,8 @@ export default function InquiryForm() {
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-dark-900/50 border border-dark-600 rounded-tech text-white placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
-                  placeholder="회사명 또는 조직"
+                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
+                  placeholder={lang === "ko" ? "회사명 또는 조직" : "Company or Organization"}
                 />
               </div>
 
@@ -174,9 +180,9 @@ export default function InquiryForm() {
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-mono uppercase tracking-wider text-cyber-400 mb-2"
+                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
                 >
-                  {CONTACT_CONTENT.form.message} *
+                  {t.form.message} *
                 </label>
                 <textarea
                   id="message"
@@ -185,8 +191,8 @@ export default function InquiryForm() {
                   value={formData.message}
                   onChange={handleChange}
                   rows={6}
-                  className="w-full px-4 py-3 bg-dark-900/50 border border-dark-600 rounded-tech text-white placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all resize-none"
-                  placeholder="문의 내용을 자세히 작성해주세요..."
+                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all resize-none"
+                  placeholder={lang === "ko" ? "문의 내용을 자세히 작성해주세요..." : "Please write your inquiry details..."}
                 />
               </div>
 
@@ -199,13 +205,13 @@ export default function InquiryForm() {
                     status.type === "loading" || !inquiryEnabled ? 1 : 1.02,
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full btn-cyber-filled disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full btn-cyber-filled text-lg py-3.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {!inquiryEnabled
-                  ? "문의 기능 비활성화"
+                  ? (lang === "ko" ? "문의 기능 비활성화" : "Inquiry Disabled")
                   : status.type === "loading"
-                  ? "전송 중..."
-                  : CONTACT_CONTENT.form.submit}
+                  ? (lang === "ko" ? "전송 중..." : "Sending...")
+                  : t.form.submit}
               </motion.button>
 
               {/* 상태 메시지 */}
@@ -213,7 +219,7 @@ export default function InquiryForm() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`p-4 rounded-tech text-center font-mono text-sm ${
+                  className={`p-4 rounded-tech text-center font-mono text-base ${
                     status.type === "success"
                       ? "bg-green-500/10 border border-green-500/30 text-green-400"
                       : status.type === "error"

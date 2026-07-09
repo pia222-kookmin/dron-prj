@@ -36,6 +36,13 @@ export interface RentalPlan {
   popular?: boolean;
 }
 
+export interface RentalItem {
+  name: string;
+  category: string;
+  description: string;
+  image: string;
+}
+
 export interface SocialLink {
   platform: string;
   href: string;
