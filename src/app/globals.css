@@ -4,321 +4,93 @@
 
 @layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 10, 10, 10;
-    --background-end-rgb: 5, 5, 5;
+    --foreground-rgb: 12, 12, 12;      /* #0c0c0c */
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 255, 255, 255;
   }
 
   html {
     scroll-behavior: smooth;
+    background-color: #ffffff;
   }
 
   body {
-    @apply bg-dark-900 text-white antialiased;
-    background: linear-gradient(
-      180deg,
-      rgb(var(--background-start-rgb)) 0%,
-      rgb(var(--background-end-rgb)) 100%
-    );
+    @apply bg-white text-[#0c0c0c] antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
   }
 
   /* 스크롤바 커스터마이징 */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-dark-900;
+    background: #f7f7f7;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-cyber-600 rounded-tech;
+    background: #cbd5e1;
+    border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-cyber-500;
+    background: #94a3b8;
   }
 
   /* 선택 영역 스타일 */
   ::selection {
-    @apply bg-cyber-500/30 text-white;
+    background-color: rgba(0, 95, 173, 0.1);
+    color: #005FAD;
   }
 }
 
 @layer components {
-  /* 네온 글로우 버튼 */
+  /* 피그마 2차 디자인 버튼 스타일 */
   .btn-cyber {
-    @apply relative px-6 py-3 font-mono text-sm uppercase tracking-wider;
-    @apply bg-transparent border border-cyber-500 text-cyber-400;
-    @apply transition-all duration-300 ease-out;
-    @apply hover:bg-cyber-500/10 hover:shadow-neon-blue hover:text-white;
-    @apply active:scale-95;
+    @apply px-6 py-3.5 font-display text-sm font-semibold transition-all duration-200 border border-black/15 text-[#0c0c0c] flex items-center justify-center gap-2 hover:bg-black/[0.02] hover:border-black/30;
   }
 
   .btn-cyber-filled {
-    @apply btn-cyber bg-cyber-600 text-white border-transparent;
-    @apply hover:bg-cyber-500;
+    @apply px-6 py-3.5 font-display text-sm font-semibold transition-all duration-200 bg-[#005FAD] text-white flex items-center justify-center gap-2 hover:bg-[#004f91] hover:shadow-sm;
   }
 
   /* 테크니컬 카드 */
   .card-tech {
-    @apply relative bg-dark-800/50 border border-dark-600/50;
-    @apply backdrop-blur-sm rounded-tech overflow-hidden;
-    @apply transition-all duration-300;
-    @apply hover:border-cyber-500/30 hover:shadow-inner-glow;
+    @apply bg-white border border-black/[0.06] transition-all duration-200 hover:border-[#005FAD]/20 hover:shadow-sm;
   }
 
-  /* 글로우 텍스트 */
+  /* 글로우 텍스트 (피그마 디자인에서는 솔리드 컬러 처리하므로 텍스트 그림자 제거) */
   .text-glow {
-    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5),
-                 0 0 40px rgba(0, 212, 255, 0.3);
+    text-shadow: none !important;
   }
 
-  /* 스캔라인 오버레이 */
+  /* 스캔라인 오버레이 (피그마 디자인에서는 비활성화) */
   .scanline-overlay {
-    @apply pointer-events-none fixed inset-0 z-50;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.03) 2px,
-      rgba(0, 0, 0, 0.03) 4px
-    );
+    @apply hidden;
   }
 
-  /* 그리드 배경 */
+  /* 그리드 배경 (피그마 80px 간격의 4% 블루 그리드) */
   .bg-tech-grid {
     background-image: 
-      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
+      linear-gradient(rgba(0, 95, 173, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 95, 173, 0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
   }
 
   /* 섹션 컨테이너 */
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-6 lg:px-8;
   }
 
   /* 헤딩 스타일 */
   .heading-tech {
-    @apply font-display font-bold uppercase tracking-wider;
-    @apply bg-gradient-to-r from-white via-cyber-300 to-cyber-500;
-    @apply bg-clip-text text-transparent;
+    @apply font-display font-bold text-[#0c0c0c] tracking-tight;
   }
 
-  /* 코너 데코레이션 */
+  /* 코너 데코레이션 (피그마 디자인에 맞춰 단순화) */
   .corner-decoration {
-    @apply absolute w-4 h-4 border-cyber-500;
+    @apply hidden;
   }
-
-  .corner-decoration--tl {
-    @apply top-0 left-0 border-t-2 border-l-2;
-  }
-
-  .corner-decoration--tr {
-    @apply top-0 right-0 border-t-2 border-r-2;
-  }
-
-  .corner-decoration--bl {
-    @apply bottom-0 left-0 border-b-2 border-l-2;
-  }
-
-  .corner-decoration--br {
-    @apply bottom-0 right-0 border-b-2 border-r-2;
-  }
-}
-
-@layer utilities {
-  /* 그라디언트 보더 */
-  .gradient-border {
-    position: relative;
-  }
-
-  .gradient-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    padding: 1px;
-    background: linear-gradient(135deg, #00d4ff, transparent, #a855f7);
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-}
-
-/* =======================================================
-   Light Theme Scoped Overrides (Premium UAV Corporate)
-   ======================================================= */
-.theme-light {
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 248, 250, 252;
-  --foreground-rgb: 15, 23, 42;
-  background-color: #ffffff !important;
-  color: #1e293b !important;
-}
-
-/* 배경 색상 교체 */
-.theme-light .bg-dark-950 {
-  background-color: #f8fafc !important; /* 연한 회색 배경 */
-}
-.theme-light .bg-dark-900 {
-  background-color: #ffffff !important; /* 순백색 배경 */
-}
-.theme-light .bg-dark-900\/80 {
-  background-color: rgba(255, 255, 255, 0.8) !important;
-}
-.theme-light .bg-dark-900\/95 {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-}
-.theme-light .bg-dark-800 {
-  background-color: #f1f5f9 !important; /* 회색 카드 배경 */
-}
-.theme-light .bg-dark-800\/50 {
-  background-color: rgba(241, 245, 249, 0.5) !important;
-}
-.theme-light .bg-dark-900\/50 {
-  background-color: rgba(248, 250, 252, 0.5) !important;
-}
-
-/* 텍스트 색상 및 글로우 제거 */
-.theme-light .text-white {
-  color: #0f172a !important; /* 어두운 네이비/슬레이트 */
-}
-.theme-light .text-gray-300 {
-  color: #334155 !important;
-}
-.theme-light .text-gray-400 {
-  color: #475569 !important;
-}
-.theme-light .text-gray-500 {
-  color: #64748b !important;
-}
-.theme-light .text-cyber-400 {
-  color: #0284c7 !important; /* 신뢰감을 주는 하늘색 (Doosan/Narma 스타일) */
-}
-.theme-light .text-cyber-300 {
-  color: #0369a1 !important;
-}
-.theme-light .text-glow {
-  text-shadow: none !important;
-  color: #0f172a !important;
-}
-
-/* 보더 라인 */
-.theme-light .border-dark-800 {
-  border-color: #e2e8f0 !important;
-}
-.theme-light .border-dark-700 {
-  border-color: #e2e8f0 !important;
-}
-.theme-light .border-dark-700\/50 {
-  border-color: rgba(226, 232, 240, 0.5) !important;
-}
-.theme-light .border-dark-600 {
-  border-color: #cbd5e1 !important;
-}
-.theme-light .border-dark-600\/50 {
-  border-color: rgba(203, 213, 225, 0.5) !important;
-}
-
-/* 테크니컬 백그라운드 그리드 */
-.theme-light .bg-tech-grid {
-  background-image: 
-    linear-gradient(rgba(2, 132, 199, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(2, 132, 199, 0.04) 1px, transparent 1px) !important;
-}
-
-/* 헤더 & 네비게이션 */
-.theme-light header {
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  border-color: rgba(226, 232, 240, 0.8) !important;
-}
-.theme-light header span {
-  color: #0f172a !important;
-}
-
-/* 타이틀 그라디언트 */
-.theme-light .heading-tech {
-  background-image: linear-gradient(135deg, #0f172a 0%, #0284c7 100%) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
-}
-
-/* 카드 디자인 */
-.theme-light .card-tech {
-  background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-}
-.theme-light .card-tech:hover {
-  border-color: #0284c7 !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
-}
-
-/* 버튼 스타일 */
-.theme-light .btn-cyber {
-  border-color: #0284c7 !important;
-  color: #0284c7 !important;
-  border-radius: 4px !important;
-}
-.theme-light .btn-cyber:hover {
-  background-color: #0284c7 !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2) !important;
-}
-.theme-light .btn-cyber-filled {
-  background-color: #0284c7 !important;
-  color: #ffffff !important;
-  border-color: transparent !important;
-  border-radius: 4px !important;
-}
-.theme-light .btn-cyber-filled:hover {
-  background-color: #0369a1 !important;
-  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3) !important;
-}
-
-/* 배경 블러 입자 */
-.theme-light .blur-3xl {
-  opacity: 0.15 !important;
-}
-.theme-light .bg-cyber-500\/10 {
-  background-color: rgba(2, 132, 199, 0.05) !important;
-}
-.theme-light .bg-neon-purple\/10 {
-  background-color: rgba(14, 116, 144, 0.05) !important;
-}
-
-/* 입력 필드 (문의 폼) */
-.theme-light input,
-.theme-light textarea {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-}
-.theme-light input::placeholder,
-.theme-light textarea::placeholder {
-  color: #94a3b8 !important;
-}
-.theme-light input:focus,
-.theme-light textarea:focus {
-  border-color: #0284c7 !important;
-  box-shadow: 0 0 0 1px rgba(2, 132, 199, 0.5) !important;
-}
-
-/* 기타 미세 오버라이드 */
-.theme-light .bg-dark-800 {
-  background-color: #f1f5f9 !important;
-}
-.theme-light .border-dark-700 {
-  border-color: #e2e8f0 !important;
-}
-.theme-light hr,
-.theme-light .border-t {
-  border-color: #e2e8f0 !important;
 }

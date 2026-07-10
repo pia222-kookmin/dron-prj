@@ -22,39 +22,73 @@ export default function RentalSection({ lang = "ko" }: RentalSectionProps) {
   const t = RENTAL_CONTENT[lang] || RENTAL_CONTENT.ko;
 
   return (
-    <section id="rental" className="py-24 relative overflow-hidden">
-      {/* 배경 */}
-      <div className="absolute inset-0 bg-dark-900" />
-      <div className="absolute inset-0 bg-tech-grid opacity-20" />
+    <section id="rental" className="py-28" style={{ backgroundColor: "#f7f7f7" }}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Section label */}
+        <div className="flex items-center gap-4 mb-16">
+          <span
+            className="text-xs font-semibold tracking-widest uppercase"
+            style={{ color: "#005FAD", fontFamily: "'Outfit', sans-serif" }}
+          >
+            04 — {lang === "ko" ? "장비대여" : "RENTAL"}
+          </span>
+          <div className="flex-1 h-px" style={{ backgroundColor: "rgba(0,0,0,0.08)" }} />
+        </div>
 
-      <div className="section-container relative z-10">
-        {/* 섹션 헤더 */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="heading-tech text-6xl md:text-7xl mb-6">
-            {RENTAL_CONTENT.title}
-          </h2>
-          <p className="text-cyber-400 text-2xl font-mono uppercase tracking-wider mb-6">
-            {t.subtitle}
-          </p>
-          <p className="text-gray-400 max-w-4xl mx-auto text-lg md:text-xl leading-relaxed">
-            {t.description}
-          </p>
-        </motion.div>
+        {/* Section Header (2 columns style) */}
+        <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
+          <div className="lg:col-span-7">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="font-bold leading-tight"
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: "clamp(2rem, 3.5vw, 3rem)",
+                color: "#0c0c0c",
+                letterSpacing: "-0.03em",
+              }}
+            >
+              {lang === "ko" ? (
+                <>
+                  연구·촬영·교육을 위한
+                  <br />
+                  <span style={{ color: "#005FAD" }}>장비 대여 서비스</span>
+                </>
+              ) : (
+                <>
+                  Equipment Rental for
+                  <br />
+                  <span style={{ color: "#005FAD" }}>Research, Shooting & Ed.</span>
+                </>
+              )}
+            </motion.h2>
+          </div>
+          <div className="lg:col-span-5">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="leading-relaxed text-sm text-slate-500 font-light"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {t.description}
+            </motion.p>
+          </div>
+        </div>
 
-        {/* 장비 그리드 */}
+        {/* Equipment Grid (3 columns) */}
         <motion.div
           key={lang}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-px"
+          style={{ backgroundColor: "rgba(0,0,0,0.06)" }}
         >
           {t.items.map((item: RentalItem, index: number) => (
             <RentalCard key={item.name} item={item} index={index} lang={lang} />
@@ -79,83 +113,62 @@ function RentalCard({ item, index, lang }: { item: RentalItem; index: number; la
           },
         },
       }}
-      whileHover={{ y: -8 }}
-      className="card-tech relative flex flex-col justify-between h-full group"
+      className="group overflow-hidden flex flex-col justify-between"
+      style={{ backgroundColor: "#ffffff" }}
     >
       <div>
-        {/* 이미지 영역 */}
-        <div className="relative h-56 bg-gradient-to-br from-dark-800 to-dark-900 flex items-center justify-center overflow-hidden border-b border-dark-700">
-          <div className="absolute inset-0 bg-tech-grid opacity-10" />
+        {/* Image container */}
+        <div className="overflow-hidden bg-[#e8f1fb]">
           {item.image ? (
             <img
               src={item.image}
               alt={item.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              className="w-full h-44 object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            // 이미지 없는 경우 (기타 장비 등) 플레이스홀더
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-dark-850 to-dark-950 p-4">
-              <svg
-                className="w-12 h-12 text-cyber-500/30 mb-2 group-hover:text-cyber-500/50 transition-colors"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
+            <div className="w-full h-44 flex flex-col items-center justify-center p-4 bg-slate-100">
+              <svg className="w-12 h-12 text-[#005FAD]/20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <span className="text-[10px] text-gray-600 font-mono tracking-wider uppercase">
-                Specialized Hardware
-              </span>
+              <span className="text-[10px] text-slate-400 font-mono tracking-widest uppercase">Hardware</span>
             </div>
           )}
-          
-          {/* 호버 글로우 효과 */}
-          <div className="absolute inset-0 bg-gradient-to-t from-cyber-500/0 via-cyber-500/5 to-cyber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </div>
 
-        {/* 바디 영역 */}
-        <div className="p-6">
-          {/* 카테고리 배지 */}
-          <span className="inline-block px-3 py-1 bg-dark-800 text-xs font-mono text-cyber-400 uppercase tracking-widest rounded mb-3.5 border border-dark-700">
+        {/* Card Body */}
+        <div className="p-6 flex flex-col flex-1">
+          <span
+            className="text-[10px] font-semibold tracking-widest uppercase mb-2 block text-[#005FAD]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
             {item.category}
           </span>
-          
-          {/* 장비명 */}
-          <h3 className="text-xl font-display font-bold text-white mb-2.5 group-hover:text-cyber-300 transition-colors">
+          <h3
+            className="font-bold text-base mb-2 text-[#0c0c0c] transition-colors group-hover:text-[#005FAD]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
             {item.name}
           </h3>
-
-          {/* 설명 */}
-          <p className="text-gray-400 text-sm leading-relaxed min-h-[50px]">
+          <p className="text-xs leading-relaxed text-slate-500 font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
             {item.description}
           </p>
         </div>
       </div>
 
-      {/* CTA 영역 */}
-      <div className="p-6 pt-0">
+      {/* Link to Contact */}
+      <div className="px-6 pb-6">
         <a
           href="#contact"
-          className="block w-full text-center btn-cyber text-sm py-2.5 font-bold"
+          className="text-xs font-semibold flex items-center gap-1 transition-all duration-200 text-[#005FAD] hover:text-[#004f91]"
+          style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-          {lang === "ko" ? "대여 신청 및 문의" : "Inquire Rental"}
+          {lang === "ko" ? "대여 문의" : "Inquire Rental"}
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
       </div>
-
-      {/* 카드 코너 데코레이션 */}
-      <div className="absolute top-0 left-0 w-5 h-5 border-t border-l border-cyber-500/0 group-hover:border-cyber-500 transition-colors duration-300" />
-      <div className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-cyber-500/0 group-hover:border-cyber-500 transition-colors duration-300" />
     </motion.div>
   );
 }

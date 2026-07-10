@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, company, message } = body;
+    const { name, email, company, message, phone } = body;
 
     // 필수 입력 필드 검증
     if (!name || !email || !message) {
@@ -27,6 +27,7 @@ export async function POST(req: Request) {
         name,
         email,
         company: company || "미입력",
+        phone: phone || "미입력",
         message,
       });
 
@@ -62,6 +63,7 @@ export async function POST(req: Request) {
 
 이름: ${name}
 이메일: ${email}
+연락처: ${phone || "미입력"}
 회사/조직: ${company || "미입력"}
 
 문의 내용:
@@ -79,6 +81,10 @@ ${message}
             <tr>
               <td style="padding: 8px 0; font-weight: bold; color: #64748b;">이메일</td>
               <td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #0ea5e9; text-decoration: none;">${email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #64748b;">연락처</td>
+              <td style="padding: 8px 0; color: #0f172a;">${phone || "미입력"}</td>
             </tr>
             <tr>
               <td style="padding: 8px 0; font-weight: bold; color: #64748b;">회사/조직</td>

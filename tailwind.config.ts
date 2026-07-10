@@ -44,8 +44,8 @@ const config: Config = {
       // 미래지향적 타이포그래피
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        mono: ["var(--font-jetbrains-mono)", "monospace"],
-        display: ["var(--font-orbitron)", "sans-serif"], // 테크니컬 헤딩용
+        mono: ["monospace"],
+        display: ["var(--font-outfit)", "sans-serif"],
       },
       // 테크니컬 애니메이션
       animation: {

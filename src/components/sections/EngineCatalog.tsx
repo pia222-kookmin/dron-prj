@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PRODUCTS_CONTENT } from "@/constants";
 import type { Product } from "@/types";
@@ -9,83 +10,41 @@ interface EngineCatalogProps {
 }
 
 export default function EngineCatalog({ lang = "ko" }: EngineCatalogProps) {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
   const t = PRODUCTS_CONTENT[lang] || PRODUCTS_CONTENT.ko;
+  const [activeProduct, setActiveProduct] = useState(0);
+  const products = t.products || [];
 
-  return (
-    <section id="products" className="py-24 relative overflow-hidden">
-      {/* 배경 */}
-      <div className="absolute inset-0 bg-dark-900" />
-      <div className="absolute inset-0 bg-tech-grid opacity-20" />
-
-      <div className="section-container relative z-10">
-        {/* 섹션 헤더 */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="heading-tech text-6xl md:text-7xl mb-6">
-            {PRODUCTS_CONTENT.title}
-          </h2>
-          <p className="text-cyber-400 text-2xl font-mono uppercase tracking-wider">
-            {t.subtitle}
-          </p>
-        </motion.div>
-
-        {/* 제품 그리드 */}
-        <motion.div
-          key={lang}
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-        >
-          {t.products.map((product: Product, index: number) => (
-            <EngineCard key={product.name} product={product} index={index} lang={lang} />
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function EngineCard({ product, index, lang }: { product: Product; index: number; lang: "ko" | "en" }) {
-  // 카테고리별 스펙 라벨 동적 매핑
+  // Helper to determine spec labels based on product category & language
   const getSpecLabels = (category: string) => {
     if (lang === "en") {
       switch (category) {
         case "Engine":
+        case "엔진":
           return { power: "Power", weight: "Weight", efficiency: "Displ." };
         case "Fuel Injector":
+        case "연료분사부품":
           return { power: "Control", weight: "Design", efficiency: "Core Feature" };
         case "Ignition System":
+        case "점화시스템":
           return { power: "Voltage", weight: "Feature", efficiency: "Startup" };
         case "Fuel System Parts":
+        case "연료공급부품":
           return { power: "Mixture", weight: "Compat.", efficiency: "Method" };
         default:
           return { power: "Power", weight: "Weight", efficiency: "Feature" };
       }
     } else {
       switch (category) {
+        case "Engine":
         case "엔진":
           return { power: "출력", weight: "중량", efficiency: "배기량" };
+        case "Fuel Injector":
         case "연료분사부품":
           return { power: "제어 방식", weight: "디자인", efficiency: "핵심 기능" };
+        case "Ignition System":
         case "점화시스템":
           return { power: "입력 전압", weight: "특징", efficiency: "시동 성능" };
+        case "Fuel System Parts":
         case "연료공급부품":
           return { power: "혼합 제어", weight: "호환성", efficiency: "공급 방식" };
         default:
@@ -94,98 +53,178 @@ function EngineCard({ product, index, lang }: { product: Product; index: number;
     }
   };
 
-  const labels = getSpecLabels(product.category);
+  const currentProduct = products[activeProduct];
+  const labels = currentProduct ? getSpecLabels(currentProduct.category) : { power: "Power", weight: "Weight", efficiency: "Efficiency" };
 
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: {
-            duration: 0.6,
-            delay: index * 0.05,
-          },
-        },
-      }}
-      whileHover={{ y: -10 }}
-      className="card-tech group relative flex flex-col justify-between h-full"
-    >
-      <div>
-        {/* 상단 라벨 */}
-        <div className="absolute top-4 right-4 z-10">
-          <span className="px-3.5 py-1 bg-cyber-600/80 backdrop-blur-sm text-sm font-mono uppercase tracking-wider rounded-tech border border-cyber-500/30">
-            {product.category}
+    <section id="products" className="py-28" style={{ backgroundColor: "#ffffff" }}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Section label */}
+        <div className="flex items-center gap-4 mb-16">
+          <span
+            className="text-xs font-semibold tracking-widest uppercase"
+            style={{ color: "#005FAD", fontFamily: "'Outfit', sans-serif" }}
+          >
+            03 — {lang === "ko" ? "제품" : "PRODUCTS"}
           </span>
+          <div className="flex-1 h-px" style={{ backgroundColor: "rgba(0,0,0,0.08)" }} />
         </div>
 
-        {/* 이미지 영역 */}
-        <div className="relative h-56 bg-gradient-to-br from-dark-800 to-dark-900 flex items-center justify-center overflow-hidden border-b border-dark-700">
-          <div className="absolute inset-0 bg-tech-grid opacity-10" />
-          {product.image ? (
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-          ) : (
-            <motion.div
-              className="relative z-10 text-4xl font-display text-cyber-500/20"
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.3 }}
+        <div className="grid lg:grid-cols-12 gap-12">
+          {/* Left Column: Heading, description, selector */}
+          <div className="lg:col-span-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="font-bold leading-tight mb-4"
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: "clamp(2rem, 3.5vw, 3rem)",
+                color: "#0c0c0c",
+                letterSpacing: "-0.03em",
+              }}
             >
-              {product.name}
+              {lang === "ko" ? (
+                <>
+                  검증된
+                  <br />
+                  <span style={{ color: "#005FAD" }}>추진 솔루션</span>
+                </>
+              ) : (
+                <>
+                  Proven
+                  <br />
+                  <span style={{ color: "#005FAD" }}>Propulsion Solutions</span>
+                </>
+              )}
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-sm leading-relaxed text-slate-500 mb-8 max-w-xs"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {t.subtitle}
+            </motion.p>
+
+            {/* Vertical list selector */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex flex-col gap-1 border-t border-gray-100 pt-4"
+            >
+              {products.map((product: Product, i: number) => (
+                <button
+                  key={product.name}
+                  onClick={() => setActiveProduct(i)}
+                  className="flex items-center justify-between px-4 py-3.5 text-left text-sm font-semibold transition-all duration-200 border-l-4 rounded-sm"
+                  style={{
+                    backgroundColor: activeProduct === i ? "#005FAD" : "transparent",
+                    color: activeProduct === i ? "#ffffff" : "#4a4a4a",
+                    borderLeftColor: activeProduct === i ? "#005FAD" : "transparent",
+                    fontFamily: "'Outfit', sans-serif",
+                  }}
+                >
+                  <span>{product.name}</span>
+                  <span
+                    className="text-[10px] px-2 py-0.5 rounded-sm font-mono tracking-wider"
+                    style={{
+                      backgroundColor: activeProduct === i ? "rgba(255,255,255,0.2)" : "#f0f0f0",
+                      color: activeProduct === i ? "#ffffff" : "#666",
+                    }}
+                  >
+                    {product.category}
+                  </span>
+                </button>
+              ))}
             </motion.div>
-          )}
-          
-          {/* 호버 글로우 효과 */}
-          <div className="absolute inset-0 bg-gradient-to-t from-cyber-500/0 via-cyber-500/5 to-cyber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-        </div>
+          </div>
 
-        {/* 콘텐츠 */}
-        <div className="p-6">
-          {/* 제품명 */}
-          <h3 className="text-2xl font-display font-bold text-white mb-3 group-hover:text-cyber-300 transition-colors">
-            {product.name}
-          </h3>
+          {/* Right Column: Dynamic Detail Cards */}
+          <div className="lg:col-span-8">
+            {currentProduct && (
+              <motion.div
+                key={currentProduct.name}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4 }}
+                className="flex flex-col gap-0 border border-black/10 rounded-sm overflow-hidden shadow-sm bg-white"
+              >
+                {/* Image Section */}
+                <div className="overflow-hidden bg-slate-50 relative h-80 flex items-center justify-center border-b border-black/5">
+                  {currentProduct.image ? (
+                    <img
+                      src={currentProduct.image}
+                      alt={currentProduct.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-gray-300 font-display text-2xl font-bold">{currentProduct.name}</span>
+                  )}
+                </div>
 
-          {/* 설명 */}
-          <p className="text-gray-400 text-sm mb-5 leading-relaxed min-h-[50px]">
-            {product.description}
-          </p>
+                {/* Details Section */}
+                <div className="p-8">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+                    <div>
+                      <span
+                        className="text-xs font-semibold tracking-widest uppercase mb-1 block text-[#005FAD]"
+                        style={{ fontFamily: "'Outfit', sans-serif" }}
+                      >
+                        {currentProduct.category}
+                      </span>
+                      <h3
+                        className="font-bold text-2xl md:text-3xl text-[#0c0c0c] tracking-tight"
+                        style={{ fontFamily: "'Outfit', sans-serif" }}
+                      >
+                        {currentProduct.name}
+                      </h3>
+                    </div>
+                    
+                    <a
+                      href="#contact"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2.5 bg-[#005FAD] text-white hover:bg-[#004f91] transition-all rounded-sm shadow-sm"
+                      style={{ fontFamily: "'Outfit', sans-serif" }}
+                    >
+                      {lang === "ko" ? "견적 문의" : "Quote Request"}
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </a>
+                  </div>
 
-          {/* 스펙 */}
-          <div className="space-y-3 mb-2">
-            <SpecItem label={labels.power} value={product.specs.power} />
-            <SpecItem label={labels.weight} value={product.specs.weight} />
-            <SpecItem label={labels.efficiency} value={product.specs.efficiency} />
+                  <p 
+                    className="leading-relaxed mb-8 text-slate-600 text-sm font-light"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    {currentProduct.description}
+                  </p>
+
+                  {/* Specs horizontal grid */}
+                  <div className="flex flex-wrap gap-2.5 pt-4 border-t border-gray-50">
+                    <span className="text-xs px-3 py-1.5 bg-slate-100 text-slate-700 font-mono">
+                      {labels.power}: {currentProduct.specs.power}
+                    </span>
+                    <span className="text-xs px-3 py-1.5 bg-slate-100 text-slate-700 font-mono">
+                      {labels.weight}: {currentProduct.specs.weight}
+                    </span>
+                    <span className="text-xs px-3 py-1.5 bg-slate-100 text-slate-700 font-mono">
+                      {labels.efficiency}: {currentProduct.specs.efficiency}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
-
-      <div className="p-6 pt-0">
-        {/* CTA 버튼 */}
-        <a href="#contact" className="block w-full text-center btn-cyber text-sm py-2.5 font-bold">
-          {lang === "ko" ? "제품 문의하기" : "Inquire Product"}
-        </a>
-      </div>
-
-      {/* 카드 코너 데코레이션 */}
-      <div className="absolute top-0 left-0 w-6 h-6 border-t border-l border-cyber-500/0 group-hover:border-cyber-500 transition-colors duration-300" />
-      <div className="absolute bottom-0 right-0 w-6 h-6 border-b border-r border-cyber-500/0 group-hover:border-cyber-500 transition-colors duration-300" />
-    </motion.div>
-  );
-}
-
-function SpecItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-gray-500 font-mono tracking-wider">
-        {label}
-      </span>
-      <div className="flex-1 mx-2 border-b border-dashed border-dark-600" />
-      <span className="text-cyber-400 font-mono font-semibold">{value}</span>
-    </div>
+    </section>
   );
 }

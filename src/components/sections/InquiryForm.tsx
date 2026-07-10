@@ -2,12 +2,13 @@
 
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { CONTACT_CONTENT } from "@/constants";
+import { CONTACT_CONTENT, SITE_CONFIG } from "@/constants";
 import { isInquiryEmailEnabled, sendEmail } from "@/lib/email";
 
 interface FormData {
   name: string;
   email: string;
+  phone: string;
   company: string;
   message: string;
 }
@@ -27,6 +28,7 @@ export default function InquiryForm({ lang = "ko" }: InquiryFormProps) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
+    phone: "",
     company: "",
     message: "",
   });
@@ -57,9 +59,9 @@ export default function InquiryForm({ lang = "ko" }: InquiryFormProps) {
         type: "success",
         message: lang === "ko" ? "문의가 성공적으로 전송되었습니다!" : "Inquiry has been sent successfully!",
       });
-      setFormData({ name: "", email: "", company: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", company: "", message: "" });
       
-      // 3초 후 상태 초기화
+      // Reset status after 3 seconds
       setTimeout(() => {
         setStatus({ type: "idle", message: "" });
       }, 3000);
@@ -93,159 +95,298 @@ export default function InquiryForm({ lang = "ko" }: InquiryFormProps) {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
-      {/* 배경 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-800 to-dark-950" />
-      <div className="absolute inset-0 bg-tech-grid opacity-20" />
-
-      {/* 글로우 효과 */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyber-500/5 rounded-full blur-3xl" />
-
-      <div className="section-container relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* 섹션 헤더 */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="heading-tech text-6xl md:text-7xl mb-6">
-              {CONTACT_CONTENT.title}
-            </h2>
-            <p className="text-cyber-400 text-2xl font-mono uppercase tracking-wider mb-4">
-              {t.subtitle}
-            </p>
-            <p className="text-gray-400 text-lg md:text-xl leading-relaxed">{t.description}</p>
-          </motion.div>
-
-          {/* 폼 */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="card-tech p-8 md:p-12"
-          >
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* 이름 */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
-                >
-                  {t.form.name} *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
-                  placeholder={lang === "ko" ? "홍길동" : "John Doe"}
-                />
-              </div>
-
-              {/* 이메일 */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
-                >
-                  {t.form.email} *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
-                  placeholder="email@example.com"
-                />
-              </div>
-
-              {/* 회사명 */}
-              <div>
-                <label
-                  htmlFor="company"
-                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
-                >
-                  {t.form.company}
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all"
-                  placeholder={lang === "ko" ? "회사명 또는 조직" : "Company or Organization"}
-                />
-              </div>
-
-              {/* 메시지 */}
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-base font-mono uppercase tracking-wider text-cyber-400 mb-3"
-                >
-                  {t.form.message} *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={6}
-                  className="w-full px-5 py-4 bg-dark-900/50 border border-dark-600 rounded-tech text-white text-lg placeholder-gray-600 focus:border-cyber-500 focus:outline-none focus:ring-1 focus:ring-cyber-500 transition-all resize-none"
-                  placeholder={lang === "ko" ? "문의 내용을 자세히 작성해주세요..." : "Please write your inquiry details..."}
-                />
-              </div>
-
-              {/* 전송 버튼 */}
-              <motion.button
-                type="submit"
-                disabled={status.type === "loading" || !inquiryEnabled}
-                whileHover={{
-                  scale:
-                    status.type === "loading" || !inquiryEnabled ? 1 : 1.02,
-                }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full btn-cyber-filled text-lg py-3.5 disabled:opacity-50 disabled:cursor-not-allowed"
+    <>
+      {/* ── CTA BANNER ── */}
+      <section
+        className="py-20 relative overflow-hidden"
+        style={{ backgroundColor: "#005FAD" }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none opacity-40 bg-tech-grid"
+        />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-8">
+              <span
+                className="text-xs font-semibold tracking-widest uppercase mb-4 block text-white/60 font-mono"
               >
-                {!inquiryEnabled
-                  ? (lang === "ko" ? "문의 기능 비활성화" : "Inquiry Disabled")
-                  : status.type === "loading"
-                  ? (lang === "ko" ? "전송 중..." : "Sending...")
-                  : t.form.submit}
-              </motion.button>
-
-              {/* 상태 메시지 */}
-              {status.type !== "idle" && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`p-4 rounded-tech text-center font-mono text-base ${
-                    status.type === "success"
-                      ? "bg-green-500/10 border border-green-500/30 text-green-400"
-                      : status.type === "error"
-                      ? "bg-red-500/10 border border-red-500/30 text-red-400"
-                      : "bg-cyber-500/10 border border-cyber-500/30 text-cyber-400"
-                  }`}
-                >
-                  {status.message}
-                </motion.div>
-              )}
-            </form>
-          </motion.div>
+                {lang === "ko" ? "파트너십 및 납품" : "PARTNERSHIP & DELIVERY"}
+              </span>
+              <h2
+                className="font-bold leading-tight text-white"
+                style={{
+                  fontFamily: "'Outfit', sans-serif",
+                  fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {lang === "ko" ? (
+                  <>
+                    프로젝트의 추진력이
+                    <br />
+                    필요하신가요?
+                  </>
+                ) : (
+                  <>
+                    Need propulsion for
+                    <br />
+                    your project?
+                  </>
+                )}
+              </h2>
+            </div>
+            <div className="lg:col-span-4 flex justify-start lg:justify-end">
+              <a
+                href="#contact"
+                className="flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-all duration-200 bg-white text-[#005FAD] hover:bg-white/90 shadow-md rounded-sm"
+                style={{
+                  fontFamily: "'Outfit', sans-serif",
+                }}
+              >
+                {lang === "ko" ? "지금 상담 신청" : "Apply for Consultation"}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* ── CONTACT ── */}
+      <section id="contact" className="py-28" style={{ backgroundColor: "#ffffff" }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Section label */}
+          <div className="flex items-center gap-4 mb-16">
+            <span
+              className="text-xs font-semibold tracking-widest uppercase"
+              style={{ color: "#005FAD", fontFamily: "'Outfit', sans-serif" }}
+            >
+              05 — {lang === "ko" ? "문의" : "CONTACT"}
+            </span>
+            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(0,0,0,0.08)" }} />
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-16">
+            {/* Left side details */}
+            <div className="lg:col-span-5">
+              <h2
+                className="font-bold leading-tight mb-6"
+                style={{
+                  fontFamily: "'Outfit', sans-serif",
+                  fontSize: "clamp(2rem, 3.5vw, 3rem)",
+                  color: "#0c0c0c",
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                {lang === "ko" ? (
+                  <>
+                    기술 문의 및
+                    <br />
+                    <span style={{ color: "#005FAD" }}>견적 요청</span>
+                  </>
+                ) : (
+                  <>
+                    Technical Inquiry &
+                    <br />
+                    <span style={{ color: "#005FAD" }}>Quote Request</span>
+                  </>
+                )}
+              </h2>
+              <p className="leading-relaxed mb-10 text-sm text-slate-500 font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
+                {t.description}
+              </p>
+
+              <div className="flex flex-col gap-5">
+                {[
+                  { icon: <MailIcon />, label: lang === "ko" ? "이메일" : "Email", value: SITE_CONFIG.contact.email },
+                  { icon: <PhoneIcon />, label: lang === "ko" ? "전화" : "Phone", value: SITE_CONFIG.contact.phone },
+                  { icon: <MapPinIcon />, label: lang === "ko" ? "주소" : "Address", value: SITE_CONFIG.contact.address[lang] || SITE_CONFIG.contact.address.ko },
+                ].map((c) => (
+                  <div key={c.label} className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 flex items-center justify-center flex-shrink-0 text-[#005FAD] rounded-sm"
+                      style={{ backgroundColor: "#e8f1fb" }}
+                    >
+                      {c.icon}
+                    </div>
+                    <div>
+                      <span className="text-[10px] block mb-0.5 text-slate-400 font-mono tracking-wider">
+                        {c.label}
+                      </span>
+                      <span className="text-sm font-semibold text-[#0c0c0c]" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                        {c.value}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right side form */}
+            <div className="lg:col-span-7">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-semibold block mb-2 text-slate-700" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                      {t.form.name} *
+                    </label>
+                    <input
+                      name="name"
+                      placeholder={lang === "ko" ? "홍길동" : "John Doe"}
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 text-sm border border-black/10 outline-none transition-all duration-200 focus:border-blue-400 rounded-sm"
+                      style={{
+                        backgroundColor: "#f7f7f7",
+                        color: "#0c0c0c",
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold block mb-2 text-slate-700" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                      {t.form.company}
+                    </label>
+                    <input
+                      name="company"
+                      placeholder={lang === "ko" ? "(주)드론테크" : "Company Inc."}
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 text-sm border border-black/10 outline-none transition-all duration-200 focus:border-blue-400 rounded-sm"
+                      style={{
+                        backgroundColor: "#f7f7f7",
+                        color: "#0c0c0c",
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-semibold block mb-2 text-slate-700" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                      {t.form.email} *
+                    </label>
+                    <input
+                      name="email"
+                      type="email"
+                      placeholder="hello@example.com"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 text-sm border border-black/10 outline-none transition-all duration-200 focus:border-blue-400 rounded-sm"
+                      style={{
+                        backgroundColor: "#f7f7f7",
+                        color: "#0c0c0c",
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold block mb-2 text-slate-700" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                      {lang === "ko" ? "연락처" : "Phone"} *
+                    </label>
+                    <input
+                      name="phone"
+                      type="tel"
+                      placeholder="010-1234-5678"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 text-sm border border-black/10 outline-none transition-all duration-200 focus:border-blue-400 rounded-sm"
+                      style={{
+                        backgroundColor: "#f7f7f7",
+                        color: "#0c0c0c",
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold block mb-2 text-slate-700" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                    {t.form.message} *
+                  </label>
+                  <textarea
+                    name="message"
+                    rows={5}
+                    placeholder={lang === "ko" ? "문의하실 내용을 상세히 기재해 주세요." : "Please write your inquiry details..."}
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 text-sm border border-black/10 outline-none transition-all duration-200 focus:border-blue-400 resize-none rounded-sm"
+                    style={{
+                      backgroundColor: "#f7f7f7",
+                      color: "#0c0c0c",
+                      fontFamily: "'Inter', sans-serif",
+                    }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={status.type === "loading" || !inquiryEnabled}
+                  className="w-full py-4 text-sm font-semibold transition-all duration-200 hover:opacity-90 flex items-center justify-center gap-2 text-white bg-[#005FAD] disabled:opacity-50 disabled:cursor-not-allowed rounded-sm shadow-sm font-display"
+                  style={{
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {!inquiryEnabled
+                    ? (lang === "ko" ? "문의 기능 비활성화됨" : "Inquiry Disabled")
+                    : status.type === "loading"
+                    ? (lang === "ko" ? "전송 중..." : "Sending...")
+                    : (lang === "ko" ? "문의 접수하기" : "Submit Inquiry")}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+
+                {/* Status messages */}
+                {status.type !== "idle" && (
+                  <div
+                    className={`p-4 rounded-sm text-center text-sm font-semibold ${
+                      status.type === "success"
+                        ? "bg-green-500/10 border border-green-500/20 text-green-600"
+                        : status.type === "error"
+                        ? "bg-red-500/10 border border-red-500/20 text-red-600"
+                        : "bg-blue-500/10 border border-blue-500/20 text-blue-600"
+                    }`}
+                  >
+                    {status.message}
+                  </div>
+                )}
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+    </svg>
+  );
+}
+
+function MapPinIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
   );
 }
