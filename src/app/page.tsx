@@ -15,7 +15,7 @@ export default function HomePage() {
   const [lang, setLang] = useState<"ko" | "en">("ko");
 
   return (
-    <>
+    <div className="theme-light bg-white min-h-screen text-slate-900">
       <Header lang={lang} setLang={setLang} />
       <main className="pt-16">
         <HeroSection lang={lang} />
@@ -26,6 +26,6 @@ export default function HomePage() {
         <InquiryForm lang={lang} />
       </main>
       <Footer lang={lang} />
-    </>
+    </div>
   );
 }

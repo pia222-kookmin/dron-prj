@@ -45,14 +45,24 @@ export default function HeroSection({ lang = "ko" }: HeroSectionProps) {
       />
 
       {/* 메인 콘텐츠 */}
-      <div className="section-container relative z-10 text-center">
+      <div className="section-container relative z-10 text-center flex flex-col items-center justify-center">
+        {/* 로고 메인 정면 배치 */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="mb-8"
+        >
+          <img src="/images/logo.png" alt="OTTOMOBI Logo" className="h-28 md:h-36 object-contain" />
+        </motion.div>
+
         {/* 타이틀 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, delay: 0.15 }}
         >
-          <h1 className="text-8xl md:text-[10rem] font-display font-bold mb-6 text-glow leading-none">
+          <h1 className="text-6xl md:text-8xl font-display font-bold mb-6 text-glow leading-none">
             {content.title}
           </h1>
         </motion.div>
