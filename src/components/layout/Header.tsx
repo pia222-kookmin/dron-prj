@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { NAV_LINKS, SITE_CONFIG } from "@/constants";
+import { NAV_LINKS, SITE_CONFIG, IMAGES } from "@/constants";
 
 interface HeaderProps {
   lang: "ko" | "en";
@@ -24,10 +24,8 @@ export default function Header({ lang, setLang }: HeaderProps) {
         <div className="flex items-center justify-between">
           {/* 로고 */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyber-500 to-neon-purple rounded-tech flex items-center justify-center group-hover:shadow-neon-blue transition-shadow">
-              <span className="text-white font-display font-bold text-xl">
-                DE
-              </span>
+            <div className="w-10 h-10 rounded-tech overflow-hidden flex items-center justify-center bg-dark-800 border border-dark-700/50 group-hover:shadow-neon-blue transition-shadow p-1.5">
+              <img src={IMAGES.logo} alt="Logo" className="w-full h-full object-contain" />
             </div>
             <span className="font-display font-bold text-xl text-white hidden sm:block">
               {SITE_CONFIG.name}

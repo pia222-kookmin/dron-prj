@@ -63,10 +63,22 @@ export default function InquiryForm({ lang = "ko" }: InquiryFormProps) {
       setTimeout(() => {
         setStatus({ type: "idle", message: "" });
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
+      let errorMessage = lang === "ko" 
+        ? "전송 실패. 다시 시도해주세요." 
+        : "Sending failed. Please try again.";
+      
+      if (error && error.message === "QUOTA_EXCEEDED") {
+        errorMessage = lang === "ko"
+          ? "일일 메일 전송 한도를 초과했습니다. 잠시 후 다시 시도해 주시거나 페이지 하단의 연락처/이메일로 직접 문의해 주시기 바랍니다."
+          : "Daily mail transmission limit exceeded. Please try again later or contact us directly via the contact/email at the bottom of the page.";
+      } else if (error && error.message) {
+        errorMessage = error.message;
+      }
+
       setStatus({
         type: "error",
-        message: lang === "ko" ? "전송 실패. 다시 시도해주세요." : "Sending failed. Please try again.",
+        message: errorMessage,
       });
     }
   };
