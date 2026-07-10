@@ -19,7 +19,7 @@ export default function HeroSection({ lang = "ko" }: HeroSectionProps) {
       {/* Background image & grid */}
       <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
         <img
-          src={IMAGES.logo}
+          src="/images/company_logo.png"
           alt="Company Logo Background"
           className="w-[85%] h-[85%] object-contain select-none"
           style={{ opacity: 0.05 }}
