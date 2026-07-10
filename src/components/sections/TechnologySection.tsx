@@ -10,6 +10,7 @@ interface TechPart {
   features: {
     title: string;
     description: string;
+    icon: string;
   }[];
   tags: string[];
 }
@@ -21,131 +22,199 @@ interface TechnologySectionProps {
 export default function TechnologySection({ lang = "ko" }: TechnologySectionProps) {
   const t = TECHNOLOGY_CONTENT[lang] || TECHNOLOGY_CONTENT.ko;
 
-  const emojis = ["⚙️", "📊", "🔬", "🛡️"];
-
   return (
-    <section id="technology" className="py-28" style={{ backgroundColor: "#ffffff" }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Section label */}
-        <div className="flex items-center gap-4 mb-16">
-          <span
-            className="text-xs font-semibold tracking-widest uppercase"
-            style={{ color: "#005FAD", fontFamily: "'Outfit', sans-serif" }}
+    <section id="technology" className="py-24 relative overflow-hidden bg-white">
+      {/* 배경 격자 */}
+      <div className="absolute inset-0 bg-tech-grid opacity-85 pointer-events-none" />
+
+      <div className="section-container relative z-10">
+        {/* 섹션 헤더 (이전의 중앙 정렬 레이아웃) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-24"
+        >
+          <h2 
+            className="heading-tech text-5xl md:text-6xl mb-6 text-[#0c0c0c]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            02 — {lang === "ko" ? "핵심기술" : "TECHNOLOGY"}
-          </span>
-          <div className="flex-1 h-px" style={{ backgroundColor: "rgba(0,0,0,0.08)" }} />
-        </div>
+            {TECHNOLOGY_CONTENT.title}
+          </h2>
+          <p 
+            className="text-2xl font-bold tracking-wider mb-6 text-[#005FAD]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            {t.subtitle}
+          </p>
+          <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#005FAD]/40 to-transparent mx-auto mt-6" />
+        </motion.div>
 
-        <div className="grid lg:grid-cols-12 gap-16 items-start">
-          {/* Left Column: Heading and Description */}
-          <div className="lg:col-span-4">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="font-bold leading-tight mb-6"
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: "clamp(2rem, 3.5vw, 3rem)",
-                color: "#0c0c0c",
-                letterSpacing: "-0.03em",
-              }}
-            >
-              {lang === "ko" ? (
-                <>
-                  정밀 설계와
-                  <br />
-                  <span style={{ color: "#005FAD" }}>고속 성능 검증</span>
-                </>
-              ) : (
-                <>
-                  Precision Design &
-                  <br />
-                  <span style={{ color: "#005FAD" }}>High-Speed Verification</span>
-                </>
-              )}
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-sm leading-relaxed text-slate-500 mb-8 max-w-sm"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              {t.subtitle}
-              <br /><br />
-              {lang === "ko"
-                ? "CFD 가상 연소 시뮬레이션부터 실시간 동력계 시험, 초고속 분무 거동 가시화에 이르기까지 무인 추진체 분야의 세계 일류 표준을 추구합니다."
-                : "From CFD simulation to real-time dynamometer tests and ultra-high-speed spray visualization, we pursue global standards in UAV propulsion systems."}
-            </motion.p>
-          </div>
-
-          {/* Right Column: Capabilities 2x2 Grid */}
-          <div className="lg:col-span-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
-              className="grid sm:grid-cols-2 gap-6"
-            >
-              {t.parts.map((part: TechPart, idx: number) => (
+        {/* 3개 파트 레이아웃 (이전의 교차 배치 레이아웃 그대로 유지) */}
+        <div className="space-y-36">
+          {t.parts.map((part: TechPart, index: number) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div
+                key={part.id}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center"
+              >
+                {/* 이미지 영역 (홀수/짝수 인덱스에 따라 배치 교차) */}
                 <div
-                  key={part.id}
-                  className="p-6 border border-black/10 hover:border-[#005FAD]/30 bg-white transition-all duration-200 flex flex-col rounded-sm shadow-sm group"
+                  className={`col-span-1 lg:col-span-5 ${
+                    isEven ? "lg:order-1" : "lg:order-2"
+                  }`}
                 >
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-2xl">{emojis[idx % emojis.length]}</span>
-                    <h3
-                      className="font-bold text-base text-[#0c0c0c] transition-colors group-hover:text-[#005FAD]"
-                      style={{ fontFamily: "'Outfit', sans-serif" }}
-                    >
-                      {part.title}
-                    </h3>
-                  </div>
-
-                  {/* Tech Part First Image */}
-                  {part.images && part.images[0] && (
-                    <div className="h-32 w-full overflow-hidden mb-4 rounded-sm border border-gray-100 bg-slate-50">
+                  <motion.div
+                    initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8 }}
+                    className="relative group w-full max-w-[450px] mx-auto h-[280px] md:h-[350px]"
+                  >
+                    {/* 첫 번째 이미지 (뒤쪽 배치) */}
+                    <div className="absolute top-0 left-0 w-2/3 h-2/3 rounded overflow-hidden border border-gray-150 shadow-md transition-all duration-500 group-hover:-translate-y-2 group-hover:translate-x-2 z-0">
                       <img
                         src={part.images[0]}
-                        alt={part.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        alt={`${part.title} Image 1`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     </div>
-                  )}
 
-                  {/* Features list */}
-                  <div className="space-y-4 flex-1">
-                    {part.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="text-xs">
-                        <span className="font-semibold text-slate-800 block mb-0.5">{feat.title}</span>
-                        <p className="text-slate-500 font-light leading-relaxed">{feat.description}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5 mt-5 pt-3 border-t border-gray-100">
-                    {part.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] px-2 py-0.5 bg-slate-100 text-slate-600 font-mono"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                    {/* 두 번째 이미지 (앞쪽 배치) */}
+                    <div className="absolute bottom-0 right-0 w-2/3 h-2/3 rounded overflow-hidden border-2 border-[#005FAD]/40 shadow-sm transition-all duration-500 group-hover:translate-y-2 group-hover:-translate-x-2 z-10">
+                      <img
+                        src={part.images[1]}
+                        alt={`${part.title} Image 2`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  </motion.div>
                 </div>
-              ))}
-            </motion.div>
-          </div>
+
+                {/* 기술 소개 텍스트 영역 */}
+                <div
+                  className={`col-span-1 lg:col-span-7 flex flex-col justify-center ${
+                    isEven ? "lg:order-2" : "lg:order-1"
+                  }`}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, x: isEven ? 50 : -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8 }}
+                    className="space-y-8"
+                  >
+                    {/* 파트 제목 */}
+                    <div>
+                      <h3 
+                        className="text-3xl font-bold text-[#0c0c0c] tracking-tight"
+                        style={{ fontFamily: "'Outfit', sans-serif" }}
+                      >
+                        {part.title}
+                      </h3>
+                    </div>
+
+                    {/* 파트 내 2개 기능 리스트 */}
+                    <div className="space-y-8">
+                      {part.features.map((feature) => (
+                        <div
+                          key={feature.title}
+                          className="flex gap-5 p-6 rounded border border-black/[0.06] bg-white shadow-sm hover:border-[#005FAD]/20 transition-all duration-300 group/item"
+                        >
+                          {/* 아이콘 */}
+                          <div className="w-14 h-14 bg-gradient-to-br from-[#005FAD] to-blue-400 rounded flex items-center justify-center flex-shrink-0 group-hover/item:shadow-sm transition-all">
+                            <TechIcon icon={feature.icon} />
+                          </div>
+
+                          {/* 텍스트 정보 */}
+                          <div className="space-y-3">
+                            <h4 
+                              className="text-xl font-bold text-[#0c0c0c] group-hover/item:text-[#005FAD] transition-colors"
+                              style={{ fontFamily: "'Outfit', sans-serif" }}
+                            >
+                              {feature.title}
+                            </h4>
+                            <p className="text-slate-500 text-base leading-relaxed font-light">
+                              {feature.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* 기술 키워드 태그 */}
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {part.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-4 py-2 text-sm font-mono tracking-wider border border-black/10 bg-slate-50 text-[#005FAD] rounded-sm"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
+}
+
+function TechIcon({ icon }: { icon: string }) {
+  const iconClass = "w-6 h-6 text-white";
+
+  switch (icon) {
+    case "efi":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      );
+    case "test":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      );
+    case "dynamo":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      );
+    case "visual":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      );
+    case "drone":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      );
+    case "education":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14v7" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+      );
+  }
 }

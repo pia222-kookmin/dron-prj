@@ -10,150 +10,104 @@ interface AboutSectionProps {
 export default function AboutSection({ lang = "ko" }: AboutSectionProps) {
   const t = ABOUT_CONTENT[lang] || ABOUT_CONTENT.ko;
 
-  // Find the first equipment image to use as the hero about image
-  const heroImage = t.equipment[0]?.image || "/images/about/dle_120.jpeg";
-
   return (
-    <section id="about" className="py-28" style={{ backgroundColor: "#f7f7f7" }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Section label */}
-        <div className="flex items-center gap-4 mb-16">
-          <span
-            className="text-xs font-semibold tracking-widest uppercase"
-            style={{ color: "#005FAD", fontFamily: "'Outfit', sans-serif" }}
+    <section id="about" className="py-24 relative overflow-hidden" style={{ backgroundColor: "#f7f7f7" }}>
+      {/* 배경 격자 */}
+      <div className="absolute inset-0 bg-tech-grid opacity-85 pointer-events-none" />
+
+      <div className="section-container relative z-10">
+        {/* 섹션 헤더 (이전의 중앙 정렬 레이아웃) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 
+            className="heading-tech text-5xl md:text-6xl mb-6 text-[#0c0c0c]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            01 — {lang === "ko" ? "회사소개" : "ABOUT"}
-          </span>
-          <div className="flex-1 h-px" style={{ backgroundColor: "rgba(0,0,0,0.08)" }} />
-        </div>
+            {ABOUT_CONTENT.title}
+          </h2>
+          <p 
+            className="text-xl md:text-2xl font-bold tracking-wider mb-8 text-[#005FAD]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            {t.subtitle}
+          </p>
 
-        <div className="grid lg:grid-cols-12 gap-16 items-start">
-          {/* Left Column: Headline and Description */}
-          <div className="lg:col-span-5">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="font-bold leading-tight mb-6"
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: "clamp(2.25rem, 4vw, 3.25rem)",
-                color: "#0c0c0c",
-                letterSpacing: "-0.03em",
-              }}
+          {/* 단일 언어 소개글 영역 */}
+          <div className="max-w-4xl mx-auto border-t border-b border-black/10 py-12 my-8">
+            <p 
+              className="text-slate-600 text-lg md:text-xl leading-relaxed text-center font-light px-4"
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
-              {lang === "ko" ? (
-                <>
-                  기술이 하늘을
-                  <br />
-                  <span style={{ color: "#005FAD" }}>지배합니다</span>
-                </>
-              ) : (
-                <>
-                  Technology Paves
-                  <br />
-                  <span style={{ color: "#005FAD" }}>The Future Sky</span>
-                </>
-              )}
-            </motion.h2>
+              {t.description}
+            </p>
+          </div>
+        </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="space-y-6 text-[#5a5a5a]"
-              style={{ fontFamily: "'Inter', sans-serif", fontSize: "1.025rem", lineHeight: "1.7" }}
+        {/* 장비/자산 그리드 (4열 레이아웃 그대로 유지) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="text-center mb-10">
+            <h3 
+              className="text-2xl font-bold text-[#0c0c0c] tracking-widest uppercase mb-3"
+              style={{ fontFamily: "'Outfit', sans-serif" }}
             >
-              <p className="font-semibold text-[#0c0c0c]">{t.subtitle}</p>
-              <p className="font-light">{t.description}</p>
-            </motion.div>
+              {lang === "ko" ? "실험 장비 및 자산" : "Test Equipment & Assets"}
+            </h3>
+            <div className="h-0.5 w-16 bg-[#005FAD] mx-auto" />
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-10"
-            >
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-200 text-[#005FAD] hover:text-[#004f91]"
-                style={{ fontFamily: "'Outfit', sans-serif" }}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {t.equipment.map((item, index) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -6 }}
+                className="card-tech overflow-hidden group relative flex flex-col justify-between rounded-sm shadow-sm"
               >
-                {lang === "ko" ? "기술 문의하기" : "Inquire Technology"}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
-            </motion.div>
-          </div>
+                {/* 이미지 영역 */}
+                <div className="relative h-48 w-full bg-slate-50 overflow-hidden border-b border-gray-100">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-[#005FAD]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
 
-          {/* Right Column: Hero Image & Assets Grid */}
-          <div className="lg:col-span-7">
-            {/* Hero About Image */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="mb-8 overflow-hidden rounded-sm border border-black/5"
-            >
-              <img
-                src={heroImage}
-                alt="UAV Technology Lab"
-                className="w-full h-64 object-cover transition-transform duration-500 hover:scale-[1.03]"
-              />
-            </motion.div>
-
-            {/* Equipment Grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
-            >
-              <div className="text-left mb-6">
-                <h3
-                  className="font-semibold text-sm tracking-wider text-[#0c0c0c] uppercase"
-                  style={{ fontFamily: "'Outfit', sans-serif" }}
-                >
-                  {lang === "ko" ? "실험 장비 및 자산" : "Test Equipment & Assets"}
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                {t.equipment.map((item) => (
-                  <div
-                    key={item.name}
-                    className="p-4 border border-black/10 hover:border-[#005FAD]/30 bg-white transition-all duration-200 flex flex-col group rounded-sm shadow-sm"
+                {/* 정보 영역 */}
+                <div className="p-5 text-center bg-white flex-1 flex flex-col justify-center">
+                  <div 
+                    className="text-xs font-semibold tracking-wider uppercase mb-1.5 text-[#005FAD]"
+                    style={{ fontFamily: "'Outfit', sans-serif" }}
                   >
-                    <div className="relative h-32 w-full bg-slate-50 overflow-hidden mb-3.5 border-b border-gray-100">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <span 
-                      className="text-[10px] font-semibold text-[#005FAD] block mb-1" 
-                      style={{ fontFamily: "'Outfit', sans-serif" }}
-                    >
-                      {item.label}
-                    </span>
-                    <h4 
-                      className="font-bold text-sm text-[#0c0c0c] transition-colors group-hover:text-[#005FAD]" 
-                      style={{ fontFamily: "'Outfit', sans-serif" }}
-                    >
-                      {item.name}
-                    </h4>
+                    {item.label}
                   </div>
-                ))}
-              </div>
-            </motion.div>
+                  <h4 
+                    className="text-base font-bold text-[#0c0c0c] group-hover:text-[#005FAD] transition-colors"
+                    style={{ fontFamily: "'Outfit', sans-serif" }}
+                  >
+                    &lt; {item.name} &gt;
+                  </h4>
+                </div>
+                
+                {/* 하단 블루 글로우 라인 */}
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#005FAD]/40 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

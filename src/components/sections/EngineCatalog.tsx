@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { PRODUCTS_CONTENT } from "@/constants";
 import type { Product } from "@/types";
@@ -10,11 +9,66 @@ interface EngineCatalogProps {
 }
 
 export default function EngineCatalog({ lang = "ko" }: EngineCatalogProps) {
-  const t = PRODUCTS_CONTENT[lang] || PRODUCTS_CONTENT.ko;
-  const [activeProduct, setActiveProduct] = useState(0);
-  const products = t.products || [];
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
-  // Helper to determine spec labels based on product category & language
+  const t = PRODUCTS_CONTENT[lang] || PRODUCTS_CONTENT.ko;
+
+  return (
+    <section id="products" className="py-24 relative overflow-hidden bg-white">
+      {/* 배경 격자 */}
+      <div className="absolute inset-0 bg-tech-grid opacity-85 pointer-events-none" />
+
+      <div className="section-container relative z-10">
+        {/* 섹션 헤더 (이전의 중앙 정렬 레이아웃) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 
+            className="heading-tech text-5xl md:text-6xl mb-6 text-[#0c0c0c]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            {PRODUCTS_CONTENT.title}
+          </h2>
+          <p 
+            className="text-xl md:text-2xl font-bold tracking-wider text-[#005FAD]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            {t.subtitle}
+          </p>
+        </motion.div>
+
+        {/* 제품 그리드 (이전의 4열 그리드 배치 그대로 유지) */}
+        <motion.div
+          key={lang}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
+          {t.products.map((product: Product, index: number) => (
+            <EngineCard key={product.name} product={product} index={index} lang={lang} />
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function EngineCard({ product, index, lang }: { product: Product; index: number; lang: "ko" | "en" }) {
+  // 카테고리별 스펙 라벨 동적 매핑
   const getSpecLabels = (category: string) => {
     if (lang === "en") {
       switch (category) {
@@ -53,178 +107,96 @@ export default function EngineCatalog({ lang = "ko" }: EngineCatalogProps) {
     }
   };
 
-  const currentProduct = products[activeProduct];
-  const labels = currentProduct ? getSpecLabels(currentProduct.category) : { power: "Power", weight: "Weight", efficiency: "Efficiency" };
+  const labels = getSpecLabels(product.category);
 
   return (
-    <section id="products" className="py-28" style={{ backgroundColor: "#ffffff" }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Section label */}
-        <div className="flex items-center gap-4 mb-16">
-          <span
-            className="text-xs font-semibold tracking-widest uppercase"
-            style={{ color: "#005FAD", fontFamily: "'Outfit', sans-serif" }}
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.6,
+            delay: index * 0.05,
+          },
+        },
+      }}
+      whileHover={{ y: -10 }}
+      className="card-tech group relative flex flex-col justify-between h-full bg-white border border-black/[0.06] hover:border-[#005FAD]/25 rounded-sm shadow-sm"
+    >
+      <div>
+        {/* 상단 라벨 */}
+        <div className="absolute top-4 right-4 z-10">
+          <span 
+            className="px-3.5 py-1 bg-[#e8f1fb] text-[#005FAD] border border-[#005FAD]/15 text-xs font-semibold uppercase tracking-wider rounded-sm"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            03 — {lang === "ko" ? "제품" : "PRODUCTS"}
+            {product.category}
           </span>
-          <div className="flex-1 h-px" style={{ backgroundColor: "rgba(0,0,0,0.08)" }} />
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12">
-          {/* Left Column: Heading, description, selector */}
-          <div className="lg:col-span-4">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="font-bold leading-tight mb-4"
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: "clamp(2rem, 3.5vw, 3rem)",
-                color: "#0c0c0c",
-                letterSpacing: "-0.03em",
-              }}
-            >
-              {lang === "ko" ? (
-                <>
-                  검증된
-                  <br />
-                  <span style={{ color: "#005FAD" }}>추진 솔루션</span>
-                </>
-              ) : (
-                <>
-                  Proven
-                  <br />
-                  <span style={{ color: "#005FAD" }}>Propulsion Solutions</span>
-                </>
-              )}
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-sm leading-relaxed text-slate-500 mb-8 max-w-xs"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              {t.subtitle}
-            </motion.p>
-
-            {/* Vertical list selector */}
+        {/* 이미지 영역 */}
+        <div className="relative h-56 bg-slate-50 flex items-center justify-center overflow-hidden border-b border-gray-100">
+          {product.image ? (
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-col gap-1 border-t border-gray-100 pt-4"
+              className="relative z-10 text-4xl font-display font-bold text-slate-200"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.3 }}
             >
-              {products.map((product: Product, i: number) => (
-                <button
-                  key={product.name}
-                  onClick={() => setActiveProduct(i)}
-                  className="flex items-center justify-between px-4 py-3.5 text-left text-sm font-semibold transition-all duration-200 border-l-4 rounded-sm"
-                  style={{
-                    backgroundColor: activeProduct === i ? "#005FAD" : "transparent",
-                    color: activeProduct === i ? "#ffffff" : "#4a4a4a",
-                    borderLeftColor: activeProduct === i ? "#005FAD" : "transparent",
-                    fontFamily: "'Outfit', sans-serif",
-                  }}
-                >
-                  <span>{product.name}</span>
-                  <span
-                    className="text-[10px] px-2 py-0.5 rounded-sm font-mono tracking-wider"
-                    style={{
-                      backgroundColor: activeProduct === i ? "rgba(255,255,255,0.2)" : "#f0f0f0",
-                      color: activeProduct === i ? "#ffffff" : "#666",
-                    }}
-                  >
-                    {product.category}
-                  </span>
-                </button>
-              ))}
+              {product.name}
             </motion.div>
-          </div>
+          )}
+        </div>
 
-          {/* Right Column: Dynamic Detail Cards */}
-          <div className="lg:col-span-8">
-            {currentProduct && (
-              <motion.div
-                key={currentProduct.name}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4 }}
-                className="flex flex-col gap-0 border border-black/10 rounded-sm overflow-hidden shadow-sm bg-white"
-              >
-                {/* Image Section */}
-                <div className="overflow-hidden bg-slate-50 relative h-80 flex items-center justify-center border-b border-black/5">
-                  {currentProduct.image ? (
-                    <img
-                      src={currentProduct.image}
-                      alt={currentProduct.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-gray-300 font-display text-2xl font-bold">{currentProduct.name}</span>
-                  )}
-                </div>
+        {/* 콘텐츠 */}
+        <div className="p-6">
+          {/* 제품명 */}
+          <h3 
+            className="text-2xl font-bold text-[#0c0c0c] mb-3 group-hover:text-[#005FAD] transition-colors"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            {product.name}
+          </h3>
 
-                {/* Details Section */}
-                <div className="p-8">
-                  <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
-                    <div>
-                      <span
-                        className="text-xs font-semibold tracking-widest uppercase mb-1 block text-[#005FAD]"
-                        style={{ fontFamily: "'Outfit', sans-serif" }}
-                      >
-                        {currentProduct.category}
-                      </span>
-                      <h3
-                        className="font-bold text-2xl md:text-3xl text-[#0c0c0c] tracking-tight"
-                        style={{ fontFamily: "'Outfit', sans-serif" }}
-                      >
-                        {currentProduct.name}
-                      </h3>
-                    </div>
-                    
-                    <a
-                      href="#contact"
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2.5 bg-[#005FAD] text-white hover:bg-[#004f91] transition-all rounded-sm shadow-sm"
-                      style={{ fontFamily: "'Outfit', sans-serif" }}
-                    >
-                      {lang === "ko" ? "견적 문의" : "Quote Request"}
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </a>
-                  </div>
+          {/* 설명 */}
+          <p className="text-slate-500 text-sm mb-5 leading-relaxed min-h-[50px] font-light">
+            {product.description}
+          </p>
 
-                  <p 
-                    className="leading-relaxed mb-8 text-slate-600 text-sm font-light"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {currentProduct.description}
-                  </p>
-
-                  {/* Specs horizontal grid */}
-                  <div className="flex flex-wrap gap-2.5 pt-4 border-t border-gray-50">
-                    <span className="text-xs px-3 py-1.5 bg-slate-100 text-slate-700 font-mono">
-                      {labels.power}: {currentProduct.specs.power}
-                    </span>
-                    <span className="text-xs px-3 py-1.5 bg-slate-100 text-slate-700 font-mono">
-                      {labels.weight}: {currentProduct.specs.weight}
-                    </span>
-                    <span className="text-xs px-3 py-1.5 bg-slate-100 text-slate-700 font-mono">
-                      {labels.efficiency}: {currentProduct.specs.efficiency}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
+          {/* 스펙 */}
+          <div className="space-y-3 mb-2">
+            <SpecItem label={labels.power} value={product.specs.power} />
+            <SpecItem label={labels.weight} value={product.specs.weight} />
+            <SpecItem label={labels.efficiency} value={product.specs.efficiency} />
           </div>
         </div>
       </div>
-    </section>
+
+      <div className="p-6 pt-0">
+        {/* CTA 버튼 */}
+        <a href="#contact" className="block w-full text-center btn-cyber text-sm py-2.5 font-bold rounded-sm">
+          {lang === "ko" ? "제품 문의하기" : "Inquire Product"}
+        </a>
+      </div>
+    </motion.div>
+  );
+}
+
+function SpecItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between text-sm">
+      <span className="text-slate-400 font-mono tracking-wider">
+        {label}
+      </span>
+      <div className="flex-1 mx-2 border-b border-dashed border-gray-200" />
+      <span className="text-[#005FAD] font-mono font-semibold">{value}</span>
+    </div>
   );
 }
