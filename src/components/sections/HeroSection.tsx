@@ -17,11 +17,11 @@ export default function HeroSection({ lang = "ko" }: HeroSectionProps) {
       style={{ backgroundColor: "#ffffff" }}
     >
       {/* Background image & grid */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
         <img
-          src="https://images.unsplash.com/photo-1487219116710-23ffcb172b2b?w=1600&h=900&fit=crop&auto=format"
-          alt="UAV Flight Background"
-          className="w-full h-full object-cover"
+          src={IMAGES.logo}
+          alt="Company Logo Background"
+          className="w-[85%] h-[85%] object-contain select-none"
           style={{ opacity: 0.05 }}
         />
         <div
