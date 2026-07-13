@@ -2958,3 +2958,113 @@ Vercel의 무료(Hobby) 요금제는 **Private 저장소에서 발생하는 '자
 ### 🔎 우리 사이트가 검색되는지 확인하는 방법
 며칠 뒤 구글 검색창에 `site:automobi.kookmin.ac.kr` 이라고 검색해 보세요. 
 아무것도 안 나오면 아직 구글 로봇이 안 다녀간 것이고, 저희 사이트 링크가 뜨기 시작했다면 그때부터는 '국민대 오토모비' 같은 일반 검색어로도 검색 결과에 나타나기 시작할 것입니다!
+
+### User Input
+
+이제 네이버에 검색 등록을 할건데..
+
+<meta name="naver-site-verification" content="f6f683a0a8a78db21d1615bb110a465594dcb81a" />
+
+ head 색션에 추가해줘
+
+*Viewed [page.tsx](file:///c:/dron_kookmin_web/src/app/admin/page.tsx) *
+
+*Viewed [layout.tsx](file:///c:/dron_kookmin_web/src/app/layout.tsx) *
+
+*Edited relevant file*
+
+*User accepted the command `git add src/app/layout.tsx; git commit -m "chore: add naver site verification tag"; git push origin main`*
+
+*Viewed [task-809.log](file:///C:/Users/Playdata/.gemini/antigravity-ide/brain/1ac11552-42c2-4f8b-9a37-50390e0d93dc/.system_generated/tasks/task-809.log) *
+
+*Viewed [task-809.log](file:///C:/Users/Playdata/.gemini/antigravity-ide/brain/1ac11552-42c2-4f8b-9a37-50390e0d93dc/.system_generated/tasks/task-809.log) *
+
+### Planner Response
+
+네이버 웹마스터 도구용 인증 태그 코드도 사이트 `head` 메타데이터 섹션에 완벽하게 추가해서 방금 배포를 완료했습니다! 🚀
+
+현재 Vercel에서 이 코드를 라이브 서버에 반영하는 중입니다. **구글 때처럼 딱 1분만 기다리셨다가** 네이버 웹마스터 도구 화면에서 **[소유권 확인]** 버튼을 눌러주세요!
+
+*(혹시 "소유권 확인 실패"라고 뜨면, 서버 반영이 덜 된 것이니 당황하지 마시고 10초 뒤에 다시 한번 눌러주시면 성공 처리될 것입니다!)*
+
+**[네이버 소유권 확인 성공 후 할 일]**
+1. 네이버 서치어드바이저 사이트 관리 화면의 왼쪽 메뉴에서 **요청 > 사이트맵 제출**로 들어갑니다.
+2. 빈칸에 구글 때와 똑같이 **`sitemap.xml`** 이라고 적고 **[확인/제출]**을 누르시면 네이버 검색 노출 준비도 모두 끝납니다!
+
+이것으로 대한민국의 양대 산맥인 구글과 네이버 검색 엔진에 모두 성공적으로 사이트를 신고하셨습니다. 네이버 인증도 한 번에 통과하셨는지 결과 남겨주세요! 😎
+
+### User Input
+
+네이버는 RSS 제출도 있네.. 이것도 준비해줘
+
+*Edited relevant file*
+
+*User accepted the command `git add src/app/rss.xml/route.ts; git commit -m "feat: add rss.xml route for naver SEO"; git push origin main`*
+
+*Viewed [task-825.log](file:///C:/Users/Playdata/.gemini/antigravity-ide/brain/1ac11552-42c2-4f8b-9a37-50390e0d93dc/.system_generated/tasks/task-825.log) *
+
+### Planner Response
+
+네이버 웹마스터 도구용 **RSS 피드(`rss.xml`)** 자동 생성 기능도 완벽하게 코드로 만들어서 방금 막 배포를 완료했습니다! 🚀
+
+Vercel 서버에 방금 전송되었으니, **방금 전처럼 딱 1분만 기다리셨다가** 네이버 서치어드바이저 화면에서 RSS 제출을 진행해 주시면 됩니다.
+
+### 📡 [네이버 RSS 제출 방법]
+1. 서치어드바이저 왼쪽 메뉴에서 **요청 > RSS 제출** 메뉴로 들어갑니다.
+2. 빈칸에 사이트맵과 다르게 전체 주소인 **`https://automobi.kookmin.ac.kr/rss.xml`** 을 적고 **[확인/제출]** 버튼을 누르시면 됩니다!
+
+이것으로 네이버 로봇이 저희 사이트의 최신 내용을 더 빠르고 정확하게 긁어갈 수 있는 최고급 세팅까지 모두 완벽하게 끝났습니다! 막힘없이 성공하셨는지 확인해 주세요! 😊
+
+### User Input
+
+robots.txt	
+robots.txt 가 존재하지 않습니다.	
+네이버 로봇 차단 설정/변경
+
+*Viewed [layout.tsx](file:///c:/dron_kookmin_web/src/app/layout.tsx) *
+
+*User accepted the command `curl -s https://automobi.kookmin.ac.kr/robots.txt`*
+
+*Viewed [task-836.log](file:///C:/Users/Playdata/.gemini/antigravity-ide/brain/1ac11552-42c2-4f8b-9a37-50390e0d93dc/.system_generated/tasks/task-836.log) *
+
+*Viewed [robots.ts](file:///c:/dron_kookmin_web/src/app/robots.ts) *
+
+*Viewed [task-836.log](file:///C:/Users/Playdata/.gemini/antigravity-ide/brain/1ac11552-42c2-4f8b-9a37-50390e0d93dc/.system_generated/tasks/task-836.log) *
+
+*User accepted the command `Invoke-WebRequest -Uri https://automobi.kookmin.ac.kr/robots.txt -UseBasicParsing | Select-Object -ExpandProperty Content`*
+
+*Viewed [task-854.log](file:///C:/Users/Playdata/.gemini/antigravity-ide/brain/1ac11552-42c2-4f8b-9a37-50390e0d93dc/.system_generated/tasks/task-854.log) *
+
+### Planner Response
+
+현재 라이브 서버를 직접 확인해 본 결과, `https://automobi.kookmin.ac.kr/robots.txt` 주소에 검색 로봇 차단 설정이 완벽하게 잘 살아있습니다! 👍
+
+네이버 서치어드바이저에서 "존재하지 않습니다"라고 뜨는 이유는, 아까 제가 쓸모없는 껍데기 파일(`public/robots.txt`)을 삭제하고 새 코드를 올리던 그 짧은 찰나의 순간을 네이버가 기억(캐시)하고 있어서 그렇습니다.
+
+### 💡 [해결 방법]
+네이버 서치어드바이저 왼쪽 메뉴에서 **검증 > robots.txt** 로 들어가신 다음,
+화면 중간쯤에 있는 **[수집요청]** 버튼을 한번 꾹 눌러주시면 됩니다!
+
+그러면 네이버 로봇이 방금 배포된 최신 `robots.txt`를 다시 스캔해서 읽어오게 됩니다. 수집 요청하시고 정상적으로 뜨는지 확인해 주세요!
+
+### User Input
+
+ok success
+
+### Planner Response
+
+🎉 완벽합니다! 구글에 이어 네이버까지, 대한민국에서 가장 중요한 두 검색 엔진에 가장 이상적인 형태로 등록을 모두 마쳤습니다.
+
+지금까지 저희가 함께 만들어낸 엄청난 결과물들을 요약해 보면 다음과 같습니다:
+
+1. **✨ 프리미엄 웹 디자인**: 트렌디하고 세련된 차세대 반응형(PC/모바일) 웹사이트 구축
+2. **⚙️ 평생 무료 관리자 페이지(CMS)**: 별도의 서버/DB 유지 비용이 '0원'인 혁신적인 GitHub 연동 콘텐츠 관리 시스템 탑재
+3. **📧 문의하기 자동 알림**: 고객이 문의를 남기면 담당자의 Gmail로 즉시 전송되는 실시간 폼 시스템
+4. **🔍 검색엔진 최적화(SEO)**: 구글 및 네이버 검색 노출을 위한 봇 차단 해제, 사이트맵(Sitemap), RSS 설정까지 모두 완료
+
+정말 길고 복잡한 여정이었는데, 끝까지 잘 진행해 주신 덕분에 이렇게 훌륭한 라이브 서비스가 탄생할 수 있었습니다! 👏
+
+이제 정말로 사이트 운영과 홍보만 남았네요. 
+혹시 나중에라도 디자인이나 색상을 변경하고 싶으시거나, 새로운 기능(게시판 등)을 추가하고 싶으시다면 언제든지 다시 찾아주세요! 
+
+오늘 정말 고생 많으셨습니다. 더 도와드릴 일이 있을까요? 😎
