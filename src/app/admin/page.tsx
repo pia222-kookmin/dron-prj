@@ -149,8 +149,8 @@ export default function AdminPage() {
 
       if (res.ok) {
         setContent(updatedContent);
-        setContentSaveStatus({ type: "success", message: "홈페이지 콘텐츠가 성공적으로 저장 및 반영되었습니다!" });
-        setTimeout(() => setContentSaveStatus({ type: "idle", message: "" }), 3000);
+        setContentSaveStatus({ type: "success", message: "성공적으로 저장되었습니다! (Vercel 자동 배포 진행 중: 라이브 사이트 반영까지 약 1~2분 소요됩니다)" });
+        setTimeout(() => setContentSaveStatus({ type: "idle", message: "" }), 6000);
       } else {
         const data = await res.json();
         setContentSaveStatus({ type: "error", message: data.error || "저장에 실패했습니다." });
@@ -528,71 +528,39 @@ export default function AdminPage() {
                   <AnimatePresence mode="wait">
                     {/* TAB: SMTP 설정 */}
                     {activeTab === "smtp" && (
-                      <motion.form
+                      <motion.div
                         key="smtp-form"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onSubmit={handleSaveSmtp}
                         className="space-y-6"
                       >
-                        <h3 className="text-xl font-bold border-b border-dark-800 pb-3 text-cyber-400">🔑 Gmail SMTP 및 수신 설정</h3>
+                        <h3 className="text-xl font-bold border-b border-dark-800 pb-3 text-cyber-400">🔑 관리자 비밀번호 및 SMTP 설정</h3>
                         
-                        <div>
-                          <label className="block text-xs font-mono uppercase tracking-wider text-cyber-400 mb-2">발신 Gmail 계정 (GMAIL_USER)</label>
-                          <input
-                            type="email"
-                            required
-                            value={gmailUser}
-                            onChange={(e) => setGmailUser(e.target.value)}
-                            className="w-full px-4 py-3 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech"
-                            placeholder="name@gmail.com"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-xs font-mono uppercase tracking-wider text-cyber-400 mb-2">구글 앱 비밀번호 (GMAIL_APP_PASSWORD)</label>
-                          <div className="relative">
-                            <input
-                              type={showPassword ? "text" : "password"}
-                              required
-                              value={gmailAppPassword}
-                              onChange={(e) => setGmailAppPassword(e.target.value)}
-                              className="w-full pl-4 pr-12 py-3 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech"
-                              placeholder="16자리 구글 앱비밀번호"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setShowPassword(!showPassword)}
-                              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-cyber-400"
-                            >
-                              {showPassword ? "숨기기" : "보기"}
-                            </button>
+                        <div className="bg-dark-950 border border-dark-800 p-6 rounded-tech text-gray-300 space-y-4">
+                          <div className="flex items-center space-x-3 text-yellow-400 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <h4 className="font-bold text-lg">클라우드 환경 보안 안내</h4>
+                          </div>
+                          
+                          <p>
+                            보안 정책상 Vercel 운영 서버에서는 환경변수 및 비밀번호를 직접 덮어쓸 수 없습니다.
+                            비밀번호나 이메일 수신 설정을 변경하시려면 <strong>Vercel 대시보드</strong>를 이용해 주세요.
+                          </p>
+                          
+                          <div className="bg-dark-900 p-4 rounded mt-4 border border-dark-700">
+                            <h5 className="font-bold text-cyber-400 mb-2 text-sm font-mono">변경 방법:</h5>
+                            <ol className="list-decimal list-inside space-y-2 text-sm text-gray-400">
+                              <li><a href="https://vercel.com" target="_blank" className="text-blue-400 hover:underline">Vercel 대시보드</a>에 접속하여 현재 프로젝트(dron-prj)를 선택합니다.</li>
+                              <li><strong>Settings &gt; Environment Variables</strong> 메뉴로 이동합니다.</li>
+                              <li>변경하려는 변수(<code>ADMIN_PASSWORD</code> 등) 우측의 Edit 버튼을 눌러 값을 수정합니다.</li>
+                              <li><strong>Deployments</strong> 메뉴로 이동하여 최신 배포 항목의 점 3개를 누르고 <strong>Redeploy</strong>를 실행합니다.</li>
+                            </ol>
                           </div>
                         </div>
-
-                        <div>
-                          <label className="block text-xs font-mono uppercase tracking-wider text-cyber-400 mb-2">수신 관리자 이메일 주소 (CONTACT_RECEIVER_EMAIL)</label>
-                          <input
-                            type="email"
-                            required
-                            value={receiverEmail}
-                            onChange={(e) => setReceiverEmail(e.target.value)}
-                            className="w-full px-4 py-3 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech"
-                            placeholder="receiver@gmail.com"
-                          />
-                        </div>
-
-                        {smtpSaveStatus.type !== "idle" && (
-                          <div className={`px-4 py-3 rounded-tech text-sm ${smtpSaveStatus.type === "success" ? "text-green-400 bg-green-500/10 border border-green-500/20" : smtpSaveStatus.type === "error" ? "text-red-400 bg-red-500/10 border border-red-500/20" : "text-cyber-400 bg-cyber-500/10 border border-cyber-500/20"}`}>
-                            {smtpSaveStatus.message}
-                          </div>
-                        )}
-
-                        <button type="submit" disabled={smtpSaveStatus.type === "loading"} className="btn-cyber-filled px-6 py-3 font-mono">
-                          {smtpSaveStatus.type === "loading" ? "저장 중..." : "SMTP 설정 저장"}
-                        </button>
-                      </motion.form>
+                      </motion.div>
                     )}
 
                     {/* TAB: 홈페이지 소개 */}
