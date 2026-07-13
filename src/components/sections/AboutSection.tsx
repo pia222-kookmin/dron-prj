@@ -11,7 +11,7 @@ export default function AboutSection({ lang = "ko" }: AboutSectionProps) {
   const t = ABOUT_CONTENT[lang] || ABOUT_CONTENT.ko;
 
   return (
-    <section id="about" className="py-24 relative overflow-hidden" style={{ backgroundColor: "#f7f7f7" }}>
+    <section id="about" className="py-10 relative overflow-hidden" style={{ backgroundColor: "#f7f7f7" }}>
       {/* 배경 격자 */}
       <div className="absolute inset-0 bg-tech-grid opacity-85 pointer-events-none" />
 
@@ -22,25 +22,25 @@ export default function AboutSection({ lang = "ko" }: AboutSectionProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-6"
         >
           <h2 
-            className="heading-tech text-5xl md:text-6xl mb-6 text-[#0c0c0c]"
+            className="heading-tech text-4xl md:text-5xl mb-3 text-[#0c0c0c]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
             {ABOUT_CONTENT.title}
           </h2>
           <p 
-            className="text-xl md:text-2xl font-bold tracking-wider mb-8 text-[#005FAD]"
+            className="text-lg md:text-xl font-bold tracking-wider mb-4 text-[#005FAD]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
             {t.subtitle}
           </p>
 
           {/* 단일 언어 소개글 영역 */}
-          <div className="max-w-4xl mx-auto border-t border-b border-black/10 py-12 my-8">
+          <div className="max-w-4xl mx-auto border-t border-b border-black/10 py-4 my-3">
             <p 
-              className="text-slate-600 text-lg md:text-xl leading-relaxed text-center font-light px-4"
+              className="text-slate-600 text-base md:text-lg leading-relaxed text-center font-light px-4"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {t.description}
@@ -55,7 +55,7 @@ export default function AboutSection({ lang = "ko" }: AboutSectionProps) {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="text-center mb-10">
+          <div className="text-center mb-4">
             <h3 
               className="text-2xl font-bold text-[#0c0c0c] tracking-widest uppercase mb-3"
               style={{ fontFamily: "'Outfit', sans-serif" }}
@@ -65,7 +65,7 @@ export default function AboutSection({ lang = "ko" }: AboutSectionProps) {
             <div className="h-0.5 w-16 bg-[#005FAD] mx-auto" />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {t.equipment.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -77,7 +77,7 @@ export default function AboutSection({ lang = "ko" }: AboutSectionProps) {
                 className="card-tech overflow-hidden group relative flex flex-col justify-between rounded-sm shadow-sm"
               >
                 {/* 이미지 영역 */}
-                <div className="relative h-48 w-full bg-slate-50 overflow-hidden border-b border-gray-100">
+                <div className="relative h-32 w-full bg-slate-50 overflow-hidden border-b border-gray-100">
                   <img
                     src={item.image}
                     alt={item.name}

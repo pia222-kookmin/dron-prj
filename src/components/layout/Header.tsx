@@ -34,21 +34,31 @@ export default function Header({ lang, setLang }: HeaderProps) {
         backdropFilter: scrolled ? "blur(16px)" : "none",
       }}
     >
-      <nav className="section-container py-4">
+      <nav className="section-container py-1.5">
         <div className="flex items-center justify-between">
           {/* 로고 */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded overflow-hidden flex items-center justify-center bg-white border border-gray-150 p-1 group-hover:shadow-sm transition-shadow">
-              <img src={IMAGES.logo} alt="Logo" className="w-full h-full object-contain" />
+            <div className="flex items-center justify-center group-hover:opacity-80 transition-opacity">
+              <img
+                src={IMAGES.logo}
+                alt="Logo"
+                className="object-contain"
+                style={{
+                  width: 64,
+                  height: 64,
+                  mixBlendMode: "multiply",
+                  filter: "contrast(1.3)",
+                }}
+              />
             </div>
-            <span className="font-display font-bold text-xl text-[#0c0c0c] hidden sm:block">
+            <span className="font-display font-bold text-2xl text-[#0c0c0c] hidden sm:block">
               {SITE_CONFIG.name}
             </span>
           </a>
 
           {/* 네비게이션 & 언어 토글 */}
-          <div className="flex items-center gap-8">
-            <div className="hidden md:flex items-center gap-8">
+          <div className="flex items-center gap-10">
+            <div className="hidden md:flex items-center gap-10">
               {currentNav.map((link, index) => (
                 <motion.a
                   key={link.href}
@@ -56,10 +66,10 @@ export default function Header({ lang, setLang }: HeaderProps) {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="text-base font-display font-medium text-slate-700 hover:text-[#005FAD] transition-colors relative group py-1"
+                  className="text-lg font-display font-semibold text-slate-700 hover:text-[#005FAD] transition-colors relative group py-1"
                 >
                   {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-px bg-[#005FAD] group-hover:w-full transition-all duration-300" />
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#005FAD] group-hover:w-full transition-all duration-300" />
                 </motion.a>
               ))}
             </div>
@@ -69,7 +79,7 @@ export default function Header({ lang, setLang }: HeaderProps) {
               onClick={() => setLang(lang === "ko" ? "en" : "ko")}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="hidden md:block px-3.5 py-1.5 border border-black/10 hover:border-black/30 text-xs font-semibold text-[#4a4a4a] hover:text-[#0c0c0c] transition-all duration-200 font-display"
+              className="hidden md:block px-5 py-2 border border-black/10 hover:border-black/30 text-sm font-bold text-[#4a4a4a] hover:text-[#0c0c0c] transition-all duration-200 font-display"
             >
               {lang === "ko" ? "EN" : "KO"}
             </motion.button>
