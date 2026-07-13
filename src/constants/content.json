@@ -511,7 +511,7 @@
           "name": "텔로드론 (Tello)",
           "category": "교육용 드론",
           "description": "비행 코딩 교육, 자율 비행 알고리즘 검증 및 입문용 프로그래밍 교육을 위한 경량 미니 드론",
-          "image": "/images/rental/tello.jpeg"
+          "image": "/uploads/1783919148051-tello4.jpg"
         },
         {
           "name": "엔진다이나모미터",
@@ -565,7 +565,7 @@
           "name": "Tello Drone (Tello)",
           "category": "Training Drone",
           "description": "Lightweight mini drone for flight coding education, autonomous flight algorithm verification, and entry-level programming.",
-          "image": "/images/rental/tello.jpeg"
+          "image": "/uploads/1783919148051-tello4.jpg"
         },
         {
           "name": "Engine Dynamometer",
