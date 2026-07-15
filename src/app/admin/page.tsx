@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type TabType = "smtp" | "about" | "tech" | "products" | "rental" | "footer";
+type TabType = "smtp" | "hero" | "about" | "tech" | "products" | "rental" | "footer";
 
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
@@ -469,6 +469,16 @@ export default function AdminPage() {
                   🔑 SMTP 설정
                 </button>
                 <button
+                  onClick={() => setActiveTab("hero")}
+                  className={`px-4 py-3.5 text-left rounded-tech border font-mono tracking-wider text-sm transition-all duration-200 ${
+                    activeTab === "hero"
+                      ? "bg-cyber-500/10 border-cyber-500 text-cyber-400 font-bold"
+                      : "bg-dark-900/60 border-dark-800 text-gray-400 hover:bg-dark-800 hover:text-white"
+                  }`}
+                >
+                  🚀 히어로 & 로고 (HERO)
+                </button>
+                <button
                   onClick={() => setActiveTab("about")}
                   className={`px-4 py-3.5 text-left rounded-tech border font-mono tracking-wider text-sm transition-all duration-200 ${
                     activeTab === "about"
@@ -560,6 +570,197 @@ export default function AdminPage() {
                             </ol>
                           </div>
                         </div>
+                      </motion.div>
+                    )}
+
+                    {/* TAB: 히어로 & 로고 관리 */}
+                    {activeTab === "hero" && (
+                      <motion.div
+                        key="hero-form"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="space-y-6"
+                      >
+                        <h3 className="text-xl font-bold border-b border-dark-800 pb-3 text-cyber-400">🚀 히어로 섹션 및 로고 관리 (HERO)</h3>
+
+                        {/* 한글 히어로 관리 */}
+                        <div className="border border-dark-800 p-4 rounded-tech bg-dark-950/20 space-y-4">
+                          <h4 className="text-sm font-bold text-cyber-400 font-mono">🇰🇷 한국어 히어로 내용</h4>
+                          <div>
+                            <label className="block text-xs text-gray-400 mb-2">제목</label>
+                            <input
+                              type="text"
+                              value={content.HERO_CONTENT.ko.title}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContent((prev: any) => {
+                                  const c = { ...prev };
+                                  c.HERO_CONTENT.ko.title = val;
+                                  return c;
+                                });
+                              }}
+                              className="w-full px-4 py-2 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-gray-400 mb-2">소제목</label>
+                            <input
+                              type="text"
+                              value={content.HERO_CONTENT.ko.subtitle}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContent((prev: any) => {
+                                  const c = { ...prev };
+                                  c.HERO_CONTENT.ko.subtitle = val;
+                                  return c;
+                                });
+                              }}
+                              className="w-full px-4 py-2 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-gray-400 mb-2">설명 내용</label>
+                            <textarea
+                              rows={3}
+                              value={content.HERO_CONTENT.ko.description}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContent((prev: any) => {
+                                  const c = { ...prev };
+                                  c.HERO_CONTENT.ko.description = val;
+                                  return c;
+                                });
+                              }}
+                              className="w-full px-4 py-2 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech resize-none"
+                            />
+                          </div>
+                        </div>
+
+                        {/* 영문 히어로 관리 */}
+                        <div className="border border-dark-800 p-4 rounded-tech bg-dark-950/20 space-y-4">
+                          <h4 className="text-sm font-bold text-cyber-400 font-mono">🇺🇸 영어 히어로 내용 (English)</h4>
+                          <div>
+                            <label className="block text-xs text-gray-400 mb-2">Title</label>
+                            <input
+                              type="text"
+                              value={content.HERO_CONTENT.en.title}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContent((prev: any) => {
+                                  const c = { ...prev };
+                                  c.HERO_CONTENT.en.title = val;
+                                  return c;
+                                });
+                              }}
+                              className="w-full px-4 py-2 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-gray-400 mb-2">Subtitle</label>
+                            <input
+                              type="text"
+                              value={content.HERO_CONTENT.en.subtitle}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContent((prev: any) => {
+                                  const c = { ...prev };
+                                  c.HERO_CONTENT.en.subtitle = val;
+                                  return c;
+                                });
+                              }}
+                              className="w-full px-4 py-2 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-gray-400 mb-2">Description</label>
+                            <textarea
+                              rows={3}
+                              value={content.HERO_CONTENT.en.description}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContent((prev: any) => {
+                                  const c = { ...prev };
+                                  c.HERO_CONTENT.en.description = val;
+                                  return c;
+                                });
+                              }}
+                              className="w-full px-4 py-2 bg-dark-950 border border-dark-700 focus:border-cyber-500 focus:outline-none text-white rounded-tech resize-none"
+                            />
+                          </div>
+                        </div>
+
+                        {/* 메인 로고 이미지 관리 */}
+                        <div className="border border-dark-800 p-4 rounded-tech bg-dark-950/20 space-y-4">
+                          <h4 className="text-sm font-bold text-cyber-400 font-mono">🖼️ 메인 로고 이미지 설정</h4>
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                            <div className="w-32 h-32 bg-dark-950 border border-dark-800 rounded overflow-hidden flex-shrink-0 flex items-center justify-center relative p-2">
+                              {content.IMAGES && content.IMAGES.company_logo ? (
+                                <img
+                                  src={content.IMAGES.company_logo}
+                                  alt="Logo Preview"
+                                  className="w-full h-full object-contain filter invert"
+                                />
+                              ) : (
+                                <span className="text-xs text-gray-600">No Image</span>
+                              )}
+                            </div>
+                            <div className="space-y-3 flex-grow w-full">
+                              <div className="flex gap-2">
+                                <label className="bg-dark-800 border border-dark-600 hover:border-cyber-500 hover:text-cyber-400 text-xs px-4 py-2 rounded cursor-pointer transition-all">
+                                  새 로고 업로드
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                      if (e.target.files && e.target.files[0]) {
+                                        handleFieldImageChange(e.target.files[0], (url) => {
+                                          setContent((prev: any) => {
+                                            const c = { ...prev };
+                                            if (!c.IMAGES) c.IMAGES = {};
+                                            c.IMAGES.company_logo = url;
+                                            return c;
+                                          });
+                                        });
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                              <div>
+                                <label className="block text-xs text-gray-500 mb-1">이미지 경로</label>
+                                <input
+                                  type="text"
+                                  value={(content.IMAGES && content.IMAGES.company_logo) || ""}
+                                  onChange={(e) => {
+                                    const val = e.target.value;
+                                    setContent((prev: any) => {
+                                      const c = { ...prev };
+                                      if (!c.IMAGES) c.IMAGES = {};
+                                      c.IMAGES.company_logo = val;
+                                      return c;
+                                    });
+                                  }}
+                                  className="w-full px-3 py-1.5 bg-dark-950 border border-dark-700 text-xs rounded focus:outline-none"
+                                />
+                              </div>
+                              <p className="text-[10px] text-gray-500">
+                                * 권장 사항: 흰색 배경의 로고 이미지를 업로드하시면 사이트 필터에 의해 파란색 미래지향적인 글로우 효과가 자동으로 부여됩니다.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {contentSaveStatus.type !== "idle" && (
+                          <div className={`px-4 py-3 rounded-tech text-sm ${contentSaveStatus.type === "success" ? "text-green-400 bg-green-500/10 border border-green-500/20" : "text-cyber-400 bg-cyber-500/10 border border-cyber-500/20"}`}>
+                            {contentSaveStatus.message}
+                          </div>
+                        )}
+
+                        <button onClick={() => handleSaveContent()} className="btn-cyber-filled px-6 py-3 font-mono">
+                          히어로 섹션 변경사항 저장
+                        </button>
                       </motion.div>
                     )}
 

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { HERO_CONTENT } from "@/constants";
+import { HERO_CONTENT, IMAGES } from "@/constants";
 import WhiteBgRemovedImage from "@/components/ui/WhiteBgRemovedImage";
 
 interface HeroSectionProps {
@@ -148,7 +148,7 @@ export default function HeroSection({ lang = "ko" }: HeroSectionProps) {
             }}
           >
             <WhiteBgRemovedImage
-              src="/images/company_logo.png"
+              src={IMAGES.company_logo || "/images/company_logo.png"}
               alt="OTTOMOBI Logo Background"
               threshold={200}
               style={{
@@ -176,7 +176,7 @@ export default function HeroSection({ lang = "ko" }: HeroSectionProps) {
             className="mb-5"
           >
             <WhiteBgRemovedImage
-              src="/images/company_logo.png"
+              src={IMAGES.company_logo || "/images/company_logo.png"}
               alt="OTTOMOBI"
               threshold={210}
               style={{
