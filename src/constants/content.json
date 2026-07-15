@@ -311,7 +311,7 @@
           "image": "/images/products/dle_60.jpeg"
         },
         {
-          "name": "DLE 120",
+          "name": "APX 120",
           "category": "엔진",
           "specs": {
             "power": "12.0 HP @ 7,500 RPM",
@@ -404,7 +404,7 @@
           "image": "/images/products/dle_60.jpeg"
         },
         {
-          "name": "DLE 120",
+          "name": "APX 120",
           "category": "Engine",
           "specs": {
             "power": "12.0 HP @ 7,500 RPM",
