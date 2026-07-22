@@ -38,8 +38,38 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://automobi.kookmin.ac.kr/#website",
+        "url": "https://automobi.kookmin.ac.kr",
+        "name": "OTTOMOBI",
+        "description": "고성능 드론 엔진 개발 및 대여 서비스. 기술 혁신 기업의 첨단 드론 추진 시스템."
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "name": ["소개", "기술", "제품", "대여", "문의"],
+        "url": [
+          "https://automobi.kookmin.ac.kr/#about",
+          "https://automobi.kookmin.ac.kr/#technology",
+          "https://automobi.kookmin.ac.kr/#products",
+          "https://automobi.kookmin.ac.kr/#rental",
+          "https://automobi.kookmin.ac.kr/#contact"
+        ]
+      }
+    ]
+  };
+
   return (
     <html lang="ko" className={`${inter.variable} ${outfit.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="antialiased">
         {children}
       </body>
